@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">SportFinder</string>
+    <string name="reg_screen_login_title">Логин</string>
+    <string name="reg_screen_password_title">Пароль</string>
+    <string name="reg_screen_submit_button">Подтвердить</string>
+    <string name="reg_screen_nav_to_auth_button">или войти</string>
 </resources>

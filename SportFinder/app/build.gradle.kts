@@ -62,6 +62,10 @@ dependencies {
     implementation(libs.ui.tooling.preview)
     implementation(libs.material)
     implementation(libs.material3)
+    implementation(libs.androidx.lifecycleRuntime)
+    implementation(libs.androidx.lifecycleRuntimeCompose)
+    implementation(libs.kotlin.immutableCollections)
+
 
     // Google Maps Location Services
     implementation(libs.googlemaps.compose)

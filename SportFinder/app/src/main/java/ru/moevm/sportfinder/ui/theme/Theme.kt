@@ -37,6 +37,17 @@ private val LightColorScheme = lightColorScheme(
     */
 )
 
+val SportFinderLightColorScheme = lightColorScheme(
+    primary = LightGreen,
+    secondary = Green,
+    onPrimary = White,
+    onSecondary = LightGray,
+    onSurface = Black,
+    onSurfaceVariant = LightGray,
+    onError = Red,
+    tertiary = Pink40
+)
+
 @Composable
 fun SportFinderTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

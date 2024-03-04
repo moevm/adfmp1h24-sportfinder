@@ -6,10 +6,12 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import ru.moevm.sportfinder.screen.auth.RegistrationScreen
+import ru.moevm.sportfinder.screen.auth.RegistrationViewModel
 import ru.moevm.sportfinder.ui.theme.SportFinderTheme
 
 class MainActivity : ComponentActivity() {
@@ -22,25 +24,18 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    val viewMode = hiltViewModel<RegistrationViewModel>()
+                    val state by viewMode.state.collectAsStateWithLifecycle()
+
+                    RegistrationScreen(
+                        state = state,
+                        onLoginEnter = viewMode::updateLogin,
+                        onPasswordEnter = viewMode::updatePassword,
+                        onSingUpClicked = viewMode::trySignUp,
+                        onNavigateToAuthClicked = {}
+                    )
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    SportFinderTheme {
-        Greeting("Android")
     }
 }
