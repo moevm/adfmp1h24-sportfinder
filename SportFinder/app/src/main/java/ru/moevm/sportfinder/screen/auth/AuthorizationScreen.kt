@@ -38,14 +38,15 @@ import androidx.compose.ui.unit.sp
 import ru.moevm.sportfinder.R
 import ru.moevm.sportfinder.ui.theme.SportFinderLightColorScheme
 
+
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun RegistrationScreen(
-    state: RegistrationState,
+fun AuthorizationScreen(
+    state: AuthorizationState,
     onLoginEnter: (String) -> Unit,
     onPasswordEnter: (String) -> Unit,
-    onSingUpClicked: () -> Unit,
-    onNavigateToAuthClicked: () -> Unit
+    onSingInClicked: () -> Unit,
+    onNavigateToRegClicked: () -> Unit
 ) {
     val (login, password, errorMessage, isLoading) = state
 
@@ -82,9 +83,10 @@ fun RegistrationScreen(
                     .focusRequester(loginFieldFocus)
                     .focusProperties { next = passwordFieldFocus },
                 placeholder = {
-                    Text(text = stringResource(id = R.string.reg_screen_login_title).uppercase())
+                    Text(text = stringResource(id = R.string.auth_screen_login_title).uppercase())
                 },
-                onValueChange = onLoginEnter)
+                onValueChange = onLoginEnter
+            )
 
             TextField(
                 value = password,
@@ -100,12 +102,13 @@ fun RegistrationScreen(
                 singleLine = true,
                 visualTransformation = PasswordVisualTransformation(),
                 placeholder = {
-                    Text(text = stringResource(id = R.string.reg_screen_password_title).uppercase())
+                    Text(text = stringResource(id = R.string.auth_screen_password_title).uppercase())
                 },
-                onValueChange = onPasswordEnter)
+                onValueChange = onPasswordEnter
+            )
 
             Button(
-                onClick = onSingUpClicked,
+                onClick = onSingInClicked,
                 modifier = Modifier.fillMaxWidth(0.8f),
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = SportFinderLightColorScheme.primary
@@ -121,14 +124,14 @@ fun RegistrationScreen(
                         )
                     }
                 } else
-                    Text(text = stringResource(id = R.string.reg_screen_submit_button).uppercase(), color = SportFinderLightColorScheme.onPrimary)
+                    Text(text = stringResource(id = R.string.auth_screen_submit_button).uppercase(), color = SportFinderLightColorScheme.onPrimary)
             }
 
             Text(
-                text = stringResource(id = R.string.reg_screen_nav_to_auth_button).uppercase(),
+                text = stringResource(id = R.string.auth_screen_nav_to_auth_button).uppercase(),
                 modifier = Modifier
                     .fillMaxWidth(0.8f)
-                    .clickable(onClick = onNavigateToAuthClicked),
+                    .clickable(onClick = onNavigateToRegClicked),
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
@@ -140,9 +143,9 @@ fun RegistrationScreen(
 
 @Composable
 @Preview(showBackground = true)
-private fun PreviewRegistrationScreen() {
-    RegistrationScreen(
-        state = RegistrationState(
+private fun PreviewAuthorizationScreen() {
+    AuthorizationScreen(
+        state = AuthorizationState(
             "some login",
             "some_password",
             null,
@@ -150,7 +153,7 @@ private fun PreviewRegistrationScreen() {
         ),
         onLoginEnter = {},
         onPasswordEnter = {},
-        onSingUpClicked = {},
-        onNavigateToAuthClicked = {}
+        onSingInClicked = {},
+        onNavigateToRegClicked = {}
     )
 }
