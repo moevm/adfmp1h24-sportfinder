@@ -10,8 +10,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import ru.moevm.sportfinder.screen.auth.RegistrationScreen
-import ru.moevm.sportfinder.screen.auth.RegistrationViewModel
+import ru.moevm.sportfinder.screen.auth.AuthorizationScreen
+import ru.moevm.sportfinder.screen.auth.AuthorizationViewModel
 import ru.moevm.sportfinder.ui.theme.SportFinderTheme
 
 class MainActivity : ComponentActivity() {
@@ -24,15 +24,15 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val viewMode = hiltViewModel<RegistrationViewModel>()
+                    val viewMode = hiltViewModel<AuthorizationViewModel>()
                     val state by viewMode.state.collectAsStateWithLifecycle()
 
-                    RegistrationScreen(
+                    AuthorizationScreen(
                         state = state,
                         onLoginEnter = viewMode::updateLogin,
                         onPasswordEnter = viewMode::updatePassword,
-                        onSingUpClicked = viewMode::trySignUp,
-                        onNavigateToAuthClicked = {}
+                        onSingInClicked = viewMode::trySignIn,
+                        onNavigateToRegClicked = {}
                     )
                 }
             }
