@@ -21,4 +21,10 @@ class NavigationController(
                 inclusive = true
             }
         }
+
+    fun navigateToProfile() =
+        navHostController.navigate(Screen.PROFILE_SCREEN.route)
+
+    fun navigateToSportCourtMap() =
+        navHostController.navigate(ScreensSubgraphs.SPORT_COURT.route)
 }

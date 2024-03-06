@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">SportFinder</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyAg8P9cPtAK_7dApzcuGzlHvxjDvswPCc8</string>
+
     <!--  Registration screen  -->
     <string name="reg_screen_login_title">Логин</string>
     <string name="reg_screen_password_title">Пароль</string>

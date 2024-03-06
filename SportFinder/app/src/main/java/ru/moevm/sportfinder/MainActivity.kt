@@ -79,7 +79,7 @@ class MainActivity : ComponentActivity() {
         ),
         BottomNavItem(
             R.drawable.ic_bottom_bar_sport_court,
-            {  }
+            navigationController::navigateToSportCourtMap
         ),
         BottomNavItem(
             R.drawable.ic_bottom_bar_running_track,
