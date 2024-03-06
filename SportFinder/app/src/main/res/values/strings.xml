@@ -11,4 +11,11 @@
     <string name="auth_screen_password_title">Пароль</string>
     <string name="auth_screen_submit_button">Войти</string>
     <string name="auth_screen_nav_to_auth_button">или зарегистрироваться</string>
+
+    <!--  Profile screen  -->
+    <string name="profile_screen_favorite_tab_title">Избранное</string>
+    <string name="profile_screen_created_tab_title">Созданное</string>
+    <string name="profile_screen_training_button_title">Тренировки</string>
+    <string name="profile_screen_running_track_button_title">Маршруты</string>
+    <string name="profile_screen_sport_courts_button_title">Площадки</string>
 </resources>

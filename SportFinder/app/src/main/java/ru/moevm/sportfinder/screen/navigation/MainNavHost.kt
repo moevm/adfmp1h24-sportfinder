@@ -11,6 +11,8 @@ import ru.moevm.sportfinder.screen.auth.AuthorizationScreen
 import ru.moevm.sportfinder.screen.auth.AuthorizationViewModel
 import ru.moevm.sportfinder.screen.auth.RegistrationScreen
 import ru.moevm.sportfinder.screen.auth.RegistrationViewModel
+import ru.moevm.sportfinder.screen.profile.ProfileScreen
+import ru.moevm.sportfinder.screen.profile.ProfileViewModel
 
 @Composable
 fun MainNavHost(
@@ -30,7 +32,8 @@ fun MainNavHost(
                     onLoginEnter = viewModel::updateLogin,
                     onPasswordEnter = viewModel::updatePassword,
                     onSingInClicked = viewModel::trySignIn,
-                    onNavigateToRegClicked = navigationController::navigateToRegistrationScreen
+                    onNavigateToRegClicked = navigationController::navigateToRegistrationScreen,
+                    onNavigateToProfileScreen = navigationController::navigateFromAuthToProfile,
                 )
             }
             composable(route = Screen.REG_SCREEN.route) {
@@ -42,7 +45,23 @@ fun MainNavHost(
                     onLoginEnter = viewModel::updateLogin,
                     onPasswordEnter = viewModel::updatePassword,
                     onSingUpClicked = viewModel::trySignUp,
-                    onNavigateToAuthClicked = navigationController::navigateToAuthScreen
+                    onNavigateToAuthClicked = navigationController::navigateToAuthScreen,
+                    onNavigateToProfileScreen = navigationController::navigateFromAuthToProfile,
+                )
+            }
+        }
+
+        navigation(
+            startDestination = Screen.PROFILE_SCREEN.route,
+            route = ScreensSubgraphs.PROFILE.route
+        ) {
+            composable(route = Screen.PROFILE_SCREEN.route) {
+                val viewModel = hiltViewModel<ProfileViewModel>()
+                val state by viewModel.state.collectAsStateWithLifecycle()
+
+                ProfileScreen(
+                    state = state,
+                    onTabSwitch = viewModel::switchTab
                 )
             }
         }

@@ -4,5 +4,6 @@ data class AuthorizationState(
     val login: String = "",
     val password: String = "",
     val errorMessage: String? = null,
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val isAuthorized: Boolean = false,
 )
