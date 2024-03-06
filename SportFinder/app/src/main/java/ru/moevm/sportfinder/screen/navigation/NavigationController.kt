@@ -14,4 +14,11 @@ class NavigationController(
 
     fun navigateToAuthScreen() =
         navHostController.navigate(Screen.AUTH_SCREEN.route)
+
+    fun navigateFromAuthToProfile() =
+        navHostController.navigate(ScreensSubgraphs.PROFILE.route) {
+            popUpTo(ScreensSubgraphs.AUTH.route) {
+                inclusive = true
+            }
+        }
 }
