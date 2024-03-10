@@ -8,7 +8,7 @@ import ru.moevm.sportfinder.common.Constants
 import javax.inject.Inject
 
 @HiltViewModel
-class SportCourtMapScreenViewModel @Inject constructor() : ViewModel() {
+class SportCourtMapViewModel @Inject constructor() : ViewModel() {
 
     private val _state = MutableStateFlow(SportCourtMapState())
     val state = _state.asStateFlow()

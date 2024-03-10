@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -65,9 +66,16 @@ fun SportCourtMapScreen(
             }
         ) {
             Row {
-                Icon(painterResource(id = R.drawable.ic_sport_court_screen_list), null)
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_sport_court_screen_list),
+                    tint = SportFinderLightColorScheme.onPrimary,
+                    contentDescription = null
+                )
                 Spacer(modifier = Modifier.width(4.dp))
-                Text(text = "Список", color = SportFinderLightColorScheme.onPrimary)
+                Text(
+                    text = stringResource(id = R.string.sport_court_screen_list_button_title).uppercase(),
+                    color = SportFinderLightColorScheme.onPrimary
+                )
             }
         }
     }

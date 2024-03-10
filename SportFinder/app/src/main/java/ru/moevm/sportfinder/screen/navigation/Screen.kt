@@ -5,7 +5,7 @@ enum class Screen(val route: String) {
     REG_SCREEN("reg_screen"),
     PROFILE_SCREEN("profile_screen"),
     SPORT_COURT_MAP_SCREEN("sport_court_map_screen"),
-
+    SPORT_COURT_LIST_SCREEN("sport_court_list_screen"),
 }
 
 enum class ScreensSubgraphs(val route: String) {
