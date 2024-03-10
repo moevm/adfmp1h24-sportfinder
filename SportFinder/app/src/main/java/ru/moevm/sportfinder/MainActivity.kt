@@ -25,6 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import ru.moevm.sportfinder.screen.common_components.BottomNavItem
+import ru.moevm.sportfinder.screen.common_components.common_top_bar.CommonTopBar
 import ru.moevm.sportfinder.screen.navigation.MainNavHost
 import ru.moevm.sportfinder.screen.navigation.NavigationController
 import ru.moevm.sportfinder.ui.theme.SportFinderLightColorScheme
@@ -42,7 +43,7 @@ class MainActivity : ComponentActivity() {
 
             val bottomBarItems = remember { getBottomItems(navigationController).toPersistentList() }
             val state by viewModel.state.collectAsStateWithLifecycle()
-            val (isSupportedBottomNav, bottomBarSelectedItem) = state
+            val (isSupportedBottomNav, bottomBarSelectedItem, isSupportedTopBar, topBarType) = state
 
             SportFinderTheme {
                 Scaffold(
@@ -54,6 +55,11 @@ class MainActivity : ComponentActivity() {
                                 onNavigateToScreen = viewModel::onBottomBarNewItemSelect
                             )
                         }
+                    },
+                    topBar = {
+                        if (isSupportedTopBar) {
+                            CommonTopBar(type = topBarType)
+                        }
                     }
                 ) { paddingValues ->
                     Box(
@@ -64,7 +70,8 @@ class MainActivity : ComponentActivity() {
                     ) {
                         MainNavHost(
                             navigationController = navigationController,
-                            updateBottomBarVisible = viewModel::onBottomBarVisibleStateUpdate
+                            updateBottomBarVisible = viewModel::onBottomBarVisibleStateUpdate,
+                            updateTopBarType = viewModel::onTopBarTypeUpdated,
                         )
                     }
                 }
