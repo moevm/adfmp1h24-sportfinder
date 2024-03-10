@@ -21,4 +21,8 @@
     <string name="profile_screen_training_button_title">Тренировки</string>
     <string name="profile_screen_running_track_button_title">Маршруты</string>
     <string name="profile_screen_sport_courts_button_title">Площадки</string>
+
+    <!--  Sport court screen  -->
+    <string name="sport_court_screen_map_button_title">Карта</string>
+    <string name="sport_court_screen_list_button_title">Список</string>
 </resources>
