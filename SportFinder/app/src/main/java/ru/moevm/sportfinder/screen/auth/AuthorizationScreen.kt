@@ -9,13 +9,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -37,6 +31,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.moevm.sportfinder.R
+import ru.moevm.sportfinder.screen.common_components.CommonButton
+import ru.moevm.sportfinder.screen.common_components.CommonTextField
 import ru.moevm.sportfinder.ui.theme.SportFinderLightColorScheme
 
 
@@ -76,51 +72,32 @@ fun AuthorizationScreen(
             )
             val (loginFieldFocus, passwordFieldFocus) = remember { FocusRequester.createRefs() }
 
-            TextField(
-                value = login,
-                shape = RoundedCornerShape(10),
-                colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color.White,
-                    focusedIndicatorColor = SportFinderLightColorScheme.primary
-                ),
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
-                singleLine = true,
+            CommonTextField(
                 modifier = Modifier
                     .padding(top = 8.dp)
                     .fillMaxWidth(0.8f)
                     .focusRequester(loginFieldFocus)
                     .focusProperties { next = passwordFieldFocus },
-                placeholder = {
-                    Text(text = stringResource(id = R.string.auth_screen_login_title).uppercase())
-                },
-                onValueChange = onLoginEnter
+                text = login,
+                hint = stringResource(id = R.string.reg_screen_login_title).uppercase(),
+                onTextChanged = onLoginEnter,
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
             )
 
-            TextField(
-                value = password,
+            CommonTextField(
                 modifier = Modifier
                     .padding(top = 8.dp)
                     .fillMaxWidth(0.8f)
                     .focusRequester(passwordFieldFocus),
-                shape = RoundedCornerShape(10),
-                colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color.White,
-                    focusedIndicatorColor = SportFinderLightColorScheme.primary
-                ),
-                singleLine = true,
-                visualTransformation = PasswordVisualTransformation(),
-                placeholder = {
-                    Text(text = stringResource(id = R.string.auth_screen_password_title).uppercase())
-                },
-                onValueChange = onPasswordEnter
+                text = password,
+                hint = stringResource(id = R.string.reg_screen_password_title).uppercase(),
+                onTextChanged = onPasswordEnter,
+                visualTransformation = PasswordVisualTransformation()
             )
 
-            Button(
-                onClick = onSingInClicked,
+            CommonButton(
                 modifier = Modifier.fillMaxWidth(0.8f),
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = SportFinderLightColorScheme.primary
-                )
+                onClick = onSingInClicked
             ) {
                 if (isLoading) {
                     Box(modifier = Modifier.fillMaxWidth()) {
@@ -132,7 +109,10 @@ fun AuthorizationScreen(
                         )
                     }
                 } else
-                    Text(text = stringResource(id = R.string.auth_screen_submit_button).uppercase(), color = SportFinderLightColorScheme.onPrimary)
+                    Text(
+                        text = stringResource(id = R.string.auth_screen_submit_button).uppercase(),
+                        color = SportFinderLightColorScheme.onPrimary
+                    )
             }
 
             Text(

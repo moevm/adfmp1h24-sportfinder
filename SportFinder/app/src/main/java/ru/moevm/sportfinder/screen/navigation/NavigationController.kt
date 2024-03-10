@@ -34,5 +34,9 @@ class NavigationController(
     fun navigateToSportCourtList() =
         navHostController.navigate(Screen.SPORT_COURT_LIST_SCREEN.route)
 
-    fun navigateToSettings() = Unit // TODO Переход в настройки
+    fun navigateToSettings() =
+        navHostController.navigate(ScreensSubgraphs.SETTINGS.route)
+
+    fun navigateToSettingsUpdateProfile() =
+        navHostController.navigate(Screen.SETTINGS_UPDATE_PROFILE_SCREEN.route)
 }

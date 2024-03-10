@@ -1,7 +1,9 @@
 package ru.moevm.sportfinder.screen.navigation
 
+import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
@@ -20,6 +22,9 @@ import ru.moevm.sportfinder.screen.common_components.common_top_bar.CommonTopBar
 import ru.moevm.sportfinder.screen.common_components.common_top_bar.TopBarTypeBuilder
 import ru.moevm.sportfinder.screen.profile.ProfileScreen
 import ru.moevm.sportfinder.screen.profile.ProfileViewModel
+import ru.moevm.sportfinder.screen.settings.MainSettingsScreen
+import ru.moevm.sportfinder.screen.settings.SettingsViewModel
+import ru.moevm.sportfinder.screen.settings.UpdateProfileSettingsScreen
 import ru.moevm.sportfinder.screen.sport_courts.SportCourtListViewModel
 import ru.moevm.sportfinder.screen.sport_courts.SportCourtMapScreen
 import ru.moevm.sportfinder.screen.sport_courts.SportCourtMapViewModel
@@ -31,7 +36,10 @@ fun MainNavHost(
     updateBottomBarVisible: (Boolean) -> Unit,
     updateTopBarType: (isVisible: Boolean, type: CommonTopBarType?) -> Unit,
 ) {
-    NavHost(navController = navigationController.navHostController, startDestination = ScreensSubgraphs.AUTH.route) {
+    NavHost(
+        navController = navigationController.navHostController,
+        startDestination = ScreensSubgraphs.AUTH.route
+    ) {
         navigation(
             startDestination = Screen.AUTH_SCREEN.route,
             route = ScreensSubgraphs.AUTH.route
@@ -77,8 +85,14 @@ fun MainNavHost(
                 val state by viewModel.state.collectAsStateWithLifecycle()
                 updateBottomBarVisible(true)
                 val topBarType = TopBarTypeBuilder()
-                    .setTitle(stringResource(id = R.string.app_title), TextStyle(fontStyle = FontStyle.Italic, fontSize = 16.sp))
-                    .addMenuButton(R.drawable.ic_top_bar_settings, navigationController::navigateToSettings)
+                    .setTitle(
+                        stringResource(id = R.string.app_title),
+                        TextStyle(fontStyle = FontStyle.Italic, fontSize = 16.sp)
+                    )
+                    .addMenuButton(
+                        R.drawable.ic_top_bar_settings,
+                        navigationController::navigateToSettings
+                    )
                     .build()
                 updateTopBarType(true, topBarType)
 
@@ -89,7 +103,10 @@ fun MainNavHost(
             }
         }
 
-        navigation(startDestination = Screen.SPORT_COURT_MAP_SCREEN.route, route = ScreensSubgraphs.SPORT_COURT.route) {
+        navigation(
+            startDestination = Screen.SPORT_COURT_MAP_SCREEN.route,
+            route = ScreensSubgraphs.SPORT_COURT.route
+        ) {
             composable(route = Screen.SPORT_COURT_MAP_SCREEN.route) {
                 val viewModel = hiltViewModel<SportCourtMapViewModel>()
                 val state by viewModel.state.collectAsStateWithLifecycle()
@@ -115,6 +132,61 @@ fun MainNavHost(
                     onTextForFilterChanged = viewModel::onTextForFilterChanged,
                     onFilterApply = viewModel::onFilterApply,
                     navigateToSportCourtMapScreen = navigationController::navigateToSportCourtMap
+                )
+            }
+        }
+
+        navigation(
+            startDestination = Screen.SETTINGS_MAIN_SCREEN.route,
+            route = ScreensSubgraphs.SETTINGS.route
+        ) {
+            composable(route = Screen.SETTINGS_MAIN_SCREEN.route) {
+                val viewModel = hiltViewModel<SettingsViewModel>()
+                updateBottomBarVisible(false)
+                val topBarType = TopBarTypeBuilder()
+                    .setBackButtonAsNavigationButton(navigationController::navigateBack)
+                    .build()
+                updateTopBarType(true, topBarType)
+                val toast = Toast.makeText(
+                    LocalContext.current,
+                    stringResource(id = R.string.settings_screen_common_successfully_logout),
+                    Toast.LENGTH_SHORT
+                )
+
+                MainSettingsScreen(
+                    onLogOutClick = {
+                        viewModel.onLogOutClicked {
+                            toast.show()
+                            // TODO предусмотреть возможно ошибочное поведение при нажатии Back
+                            navigationController.navigateToAuthScreen()
+                        }
+                    },
+                    navigateToUpdateProfile = navigationController::navigateToSettingsUpdateProfile
+                )
+            }
+            composable(route = Screen.SETTINGS_UPDATE_PROFILE_SCREEN.route) {
+                val viewModel = hiltViewModel<SettingsViewModel>()
+                val state by viewModel.updateProfileState.collectAsStateWithLifecycle()
+                updateBottomBarVisible(false)
+                val topBarType = TopBarTypeBuilder()
+                    .setBackButtonAsNavigationButton(navigationController::navigateBack)
+                    .build()
+                updateTopBarType(true, topBarType)
+                val toast = Toast.makeText(
+                    LocalContext.current,
+                    stringResource(id = R.string.settings_screen_update_profile_successfully_saved),
+                    Toast.LENGTH_SHORT
+                )
+
+                UpdateProfileSettingsScreen(
+                    state = state,
+                    onImageUrlEntered = viewModel::onImageUrlEntered,
+                    onNameEntered = viewModel::onNameEntered,
+                    onSaveClicked = {
+                        toast.show()
+                        viewModel.onSaveClicked()
+                        navigationController.navigateBack()
+                    }
                 )
             }
         }

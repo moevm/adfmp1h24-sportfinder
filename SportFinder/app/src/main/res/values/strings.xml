@@ -25,4 +25,18 @@
     <!--  Sport court screen  -->
     <string name="sport_court_screen_map_button_title">Карта</string>
     <string name="sport_court_screen_list_button_title">Список</string>
+
+    <!--  Settings screen  -->
+    <string name="settings_screen_common_group_title">Общие</string>
+    <string name="settings_screen_common_update_profile_title">Изменить профиль</string>
+    <string name="settings_screen_common_logout_title">Выход</string>
+    <string name="settings_screen_common_successfully_logout">Вы успешно вышли!</string>
+    <string name="settings_screen_update_profile_successfully_saved">Данные успешно сохранены!</string>
+    <string name="settings_screen_update_profile_change_image_url">Изменить аватарку</string>
+    <string name="settings_screen_update_profile_change_image_url_hint">Введите URL изображения…</string>
+    <string name="settings_screen_update_profile_change_name">Изменить имя</string>
+    <string name="settings_screen_update_profile_change_name_hint">Введите имя…</string>
+    <string name="settings_screen_update_profile_save_button_title">Сохранить</string>
+
+
 </resources>

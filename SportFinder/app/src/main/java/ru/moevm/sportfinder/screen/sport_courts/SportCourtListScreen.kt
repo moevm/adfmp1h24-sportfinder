@@ -34,7 +34,6 @@ import kotlinx.collections.immutable.persistentListOf
 import ru.moevm.sportfinder.R
 import ru.moevm.sportfinder.screen.common_components.TopSearchBar
 import ru.moevm.sportfinder.screen.common_components.shimmerEffect
-import ru.moevm.sportfinder.ui.theme.LightGreen
 import ru.moevm.sportfinder.ui.theme.SportFinderLightColorScheme
 
 
@@ -61,11 +60,12 @@ fun SportCourtsListScreen(
             ) {
                 if (isLoading) {
                     items(3) {
-                        Box(modifier = Modifier
-                            .height(100.dp)
-                            .fillMaxWidth()
-                            .padding(10.dp)
-                            .shimmerEffect()
+                        Box(
+                            modifier = Modifier
+                                .height(100.dp)
+                                .fillMaxWidth()
+                                .padding(10.dp)
+                                .shimmerEffect()
                         )
                     }
                 } else {
@@ -112,7 +112,7 @@ private fun SportCourtListItem(
 
     Box(
         modifier = Modifier
-            .border(BorderStroke(2.dp, LightGreen), RoundedCornerShape(5))
+            .border(BorderStroke(2.dp, SportFinderLightColorScheme.primary), RoundedCornerShape(5))
             .fillMaxWidth()
     ) {
         Column {
@@ -126,7 +126,9 @@ private fun SportCourtListItem(
                         .size(longImageSide.dp, longImageSide.dp * 2 / 3)
                 )
                 Column(
-                    modifier = Modifier.padding(top = 5.dp).fillMaxWidth()
+                    modifier = Modifier
+                        .padding(top = 5.dp)
+                        .fillMaxWidth()
                 ) {
                     Text(
                         text = name,
@@ -171,7 +173,7 @@ private fun SportCourtListItem(
                     )
 
                     Text(
-                        text = if(temperature > 0 ) "+" + temperature.toString() + "C"
+                        text = if (temperature > 0) "+" + temperature.toString() + "C"
                         else temperature.toString() + "C",
                         modifier = courtAttributesModifier,
                         style = MaterialTheme.typography.titleMedium,
