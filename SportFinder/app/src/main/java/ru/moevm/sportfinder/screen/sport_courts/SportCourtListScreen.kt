@@ -3,6 +3,7 @@ package ru.moevm.sportfinder.screen.sport_courts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,13 +37,13 @@ import ru.moevm.sportfinder.screen.common_components.TopSearchBar
 import ru.moevm.sportfinder.screen.common_components.shimmerEffect
 import ru.moevm.sportfinder.ui.theme.SportFinderLightColorScheme
 
-
 @Composable
 fun SportCourtsListScreen(
     state: SportCourtListState,
     onTextForFilterChanged: (String) -> Unit,
     onFilterApply: () -> Unit,
     navigateToSportCourtMapScreen: () -> Unit,
+    navigateToSportCourtInfoScreen: (Long) -> Unit,
 ) {
     val (listOfSportCourt, textForFilter, isLoading) = state
 
@@ -69,8 +70,11 @@ fun SportCourtsListScreen(
                         )
                     }
                 } else {
-                    items(listOfSportCourt) {
-                        SportCourtListItem(it)
+                    items(listOfSportCourt) { sportCourtListItem ->
+                        SportCourtListItem(
+                            sportCourtListItem = sportCourtListItem,
+                            navigateToSportCourtInfoScreen = navigateToSportCourtInfoScreen
+                        )
                     }
                 }
             }
@@ -106,7 +110,8 @@ fun SportCourtsListScreen(
 
 @Composable
 private fun SportCourtListItem(
-    sportCourtListItem: SportCourtListItemVO
+    sportCourtListItem: SportCourtListItemVO,
+    navigateToSportCourtInfoScreen: (Long) -> Unit,
 ) {
     val (courtId, name, tags, distance, temperature, resourceId) = sportCourtListItem
 
@@ -114,6 +119,7 @@ private fun SportCourtListItem(
         modifier = Modifier
             .border(BorderStroke(2.dp, SportFinderLightColorScheme.primary), RoundedCornerShape(5))
             .fillMaxWidth()
+            .clickable { navigateToSportCourtInfoScreen(courtId) }
     ) {
         Column {
             Row {
@@ -185,7 +191,6 @@ private fun SportCourtListItem(
     }
 }
 
-
 @Preview
 @Composable
 fun SportsCourtListScreenPreview() {
@@ -204,7 +209,10 @@ fun SportsCourtListScreenPreview() {
             textForFilter = "",
             isLoading = false
         ),
-        onTextForFilterChanged = {}, onFilterApply = {}, navigateToSportCourtMapScreen = {}
+        onTextForFilterChanged = {},
+        onFilterApply = {},
+        navigateToSportCourtMapScreen = {},
+        navigateToSportCourtInfoScreen = {}
     )
 }
 
@@ -219,6 +227,7 @@ private fun SportCourtListItemPreview() {
             distance = 0.3F,
             temperature = 13.4F,
             imagePlaceholder = R.drawable.no_image_placeholder
-        )
+        ),
+        {},
     )
 }
