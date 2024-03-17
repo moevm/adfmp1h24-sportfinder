@@ -25,6 +25,8 @@ import ru.moevm.sportfinder.screen.profile.ProfileViewModel
 import ru.moevm.sportfinder.screen.settings.MainSettingsScreen
 import ru.moevm.sportfinder.screen.settings.SettingsViewModel
 import ru.moevm.sportfinder.screen.settings.UpdateProfileSettingsScreen
+import ru.moevm.sportfinder.screen.sport_courts.SportCourtInfoScreen
+import ru.moevm.sportfinder.screen.sport_courts.SportCourtInfoViewModel
 import ru.moevm.sportfinder.screen.sport_courts.SportCourtListViewModel
 import ru.moevm.sportfinder.screen.sport_courts.SportCourtMapScreen
 import ru.moevm.sportfinder.screen.sport_courts.SportCourtMapViewModel
@@ -126,12 +128,35 @@ fun MainNavHost(
                 val state by viewModel.state.collectAsStateWithLifecycle()
                 updateBottomBarVisible(true)
                 updateTopBarType(false, null)
+                val navigateToSportCourtInfo = { courtId: Long ->
+                    viewModel.onItemClicked(courtId)
+                    navigationController.navigateToSportCourtInfo()
+                }
 
                 SportCourtsListScreen(
                     state = state,
                     onTextForFilterChanged = viewModel::onTextForFilterChanged,
                     onFilterApply = viewModel::onFilterApply,
-                    navigateToSportCourtMapScreen = navigationController::navigateToSportCourtMap
+                    navigateToSportCourtMapScreen = navigationController::navigateToSportCourtMap,
+                    navigateToSportCourtInfoScreen = navigateToSportCourtInfo
+                )
+            }
+            composable(route = Screen.SPORT_COURT_INFO_SCREEN.route) {
+                val viewModel = hiltViewModel<SportCourtInfoViewModel>()
+                val state by viewModel.state.collectAsStateWithLifecycle()
+                val isShareUrlClicked by viewModel.isShareUrlClicked.collectAsStateWithLifecycle()
+                updateBottomBarVisible(true)
+                val topBarType = TopBarTypeBuilder()
+                    .setBackButtonAsNavigationButton(navigationController::navigateBack)
+                    .addMenuButton(R.drawable.ic_top_bar_share, viewModel::onShareClick)
+                    .build()
+                updateTopBarType(true, topBarType)
+
+                SportCourtInfoScreen(
+                    state = state,
+                    isShareUrlClicked = isShareUrlClicked,
+                    onSharedUrlShown = viewModel::onSharedUrlShown,
+                    onFavoritesClicked = viewModel::onFavoritesClicked,
                 )
             }
         }

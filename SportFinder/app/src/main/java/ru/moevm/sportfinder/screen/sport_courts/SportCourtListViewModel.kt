@@ -32,6 +32,11 @@ class SportCourtListViewModel @Inject constructor() : ViewModel() {
     fun onFilterApply() {
         // TODO: пока нечего фильтровать
     }
+
+    fun onItemClicked(courtId: Long) {
+
+    }
+
     private fun updateListOfSportCourt() {
         flow {
             _state.value = _state.value.copy(isLoading = true)

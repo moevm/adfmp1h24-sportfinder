@@ -25,6 +25,7 @@
     <!--  Sport court screen  -->
     <string name="sport_court_screen_map_button_title">Карта</string>
     <string name="sport_court_screen_list_button_title">Список</string>
+    <string name="sport_court_screen_info_information_title">Информация</string>
 
     <!--  Settings screen  -->
     <string name="settings_screen_common_group_title">Общие</string>

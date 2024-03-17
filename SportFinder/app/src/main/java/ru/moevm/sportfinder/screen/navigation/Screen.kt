@@ -6,6 +6,7 @@ enum class Screen(val route: String) {
     PROFILE_SCREEN("profile_screen"),
     SPORT_COURT_MAP_SCREEN("sport_court_map_screen"),
     SPORT_COURT_LIST_SCREEN("sport_court_list_screen"),
+    SPORT_COURT_INFO_SCREEN("sport_court_info_screen"),
     SETTINGS_MAIN_SCREEN("settings_main_screen"),
     SETTINGS_UPDATE_PROFILE_SCREEN("settings_update_profile_screen")
 }
