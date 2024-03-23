@@ -27,6 +27,9 @@
     <string name="sport_court_screen_list_button_title">Список</string>
     <string name="sport_court_screen_info_information_title">Информация</string>
 
+    <!--  Training screen  -->
+    <string name="training_screen_list_add_training_title">Добавить</string>
+
     <!--  Settings screen  -->
     <string name="settings_screen_common_group_title">Общие</string>
     <string name="settings_screen_common_update_profile_title">Изменить профиль</string>

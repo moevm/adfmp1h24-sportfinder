@@ -42,4 +42,10 @@ class NavigationController(
 
     fun navigateToSettingsUpdateProfile() =
         navHostController.navigate(Screen.SETTINGS_UPDATE_PROFILE_SCREEN.route)
+
+    fun navigateToTraining() =
+        navHostController.navigate(ScreensSubgraphs.TRAINING.route)
+
+    fun navigateToTrainingList() =
+        navHostController.navigate(Screen.TRAINING_LIST_SCREEN.route)
 }

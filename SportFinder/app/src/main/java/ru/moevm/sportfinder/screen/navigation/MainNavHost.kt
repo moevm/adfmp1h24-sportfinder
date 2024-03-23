@@ -31,6 +31,8 @@ import ru.moevm.sportfinder.screen.sport_courts.SportCourtListViewModel
 import ru.moevm.sportfinder.screen.sport_courts.SportCourtMapScreen
 import ru.moevm.sportfinder.screen.sport_courts.SportCourtMapViewModel
 import ru.moevm.sportfinder.screen.sport_courts.SportCourtsListScreen
+import ru.moevm.sportfinder.screen.training.TrainingListScreen
+import ru.moevm.sportfinder.screen.training.TrainingListViewModel
 
 @Composable
 fun MainNavHost(
@@ -157,6 +159,26 @@ fun MainNavHost(
                     isShareUrlClicked = isShareUrlClicked,
                     onSharedUrlShown = viewModel::onSharedUrlShown,
                     onFavoritesClicked = viewModel::onFavoritesClicked,
+                )
+            }
+        }
+
+        navigation(
+            startDestination = Screen.TRAINING_LIST_SCREEN.route,
+            route = ScreensSubgraphs.TRAINING.route
+        ) {
+            composable(route = Screen.TRAINING_LIST_SCREEN.route) {
+                val viewModel = hiltViewModel<TrainingListViewModel>()
+                val state by viewModel.state.collectAsStateWithLifecycle()
+                updateBottomBarVisible(true)
+                updateTopBarType(false, null)
+
+                TrainingListScreen(
+                    state = state,
+                    onTextForFilterChanged = viewModel::onTextForFilterChanged,
+                    onFilterApply = viewModel::onFilterApply,
+                    navigateToAddTrainingScreen = { /*TODO*/ },
+                    navigateToTrainingInfoScreen = { /*TODO*/ }
                 )
             }
         }
