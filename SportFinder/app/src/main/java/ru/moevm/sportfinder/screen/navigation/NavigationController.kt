@@ -51,7 +51,7 @@ class NavigationController(
 
     fun navigateToTrainingCreate() =
         navHostController.navigate(Screen.TRAINING_CREATE_SCREEN.route)
-
+        
     fun navigateToRunning() =
         navHostController.navigate(ScreensSubgraphs.RUNNING.route)
 

@@ -20,6 +20,7 @@ fun CommonTextField(
     modifier: Modifier = Modifier,
     text: String,
     hint: String,
+    isSingleLine: Boolean = true,
     onTextChanged: (String) -> Unit,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
@@ -33,7 +34,7 @@ fun CommonTextField(
             cursorColor = SportFinderLightColorScheme.primary
         ),
         keyboardOptions = keyboardOptions,
-        singleLine = true,
+        singleLine = isSingleLine,
         visualTransformation = visualTransformation,
         modifier = Modifier
             .then(modifier)

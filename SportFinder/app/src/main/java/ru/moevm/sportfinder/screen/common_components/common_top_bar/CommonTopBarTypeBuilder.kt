@@ -6,27 +6,27 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import ru.moevm.sportfinder.R
 
-class TopBarTypeBuilder {
+class CommonTopBarTypeBuilder {
     private var navigationButton: CommonTopBarButtonData? = null
     private var titleData: CommonTopBarTitleData? = null
     private var menuButtons: MutableList<CommonTopBarButtonData>? = null
 
-    fun setNavigationButton(@DrawableRes iconId: Int, action: () -> Unit): TopBarTypeBuilder {
+    fun setNavigationButton(@DrawableRes iconId: Int, action: () -> Unit): CommonTopBarTypeBuilder {
         navigationButton = CommonTopBarButtonData(iconId, action)
         return this
     }
 
-    fun setBackButtonAsNavigationButton(onBackClicked: () -> Unit): TopBarTypeBuilder {
+    fun setBackButtonAsNavigationButton(onBackClicked: () -> Unit): CommonTopBarTypeBuilder {
         navigationButton = CommonTopBarButtonData(R.drawable.ic_top_bar_back_arrow, onBackClicked)
         return this
     }
 
-    fun setTitle(newTitle: String, titleStyle: TextStyle?): TopBarTypeBuilder {
+    fun setTitle(newTitle: String, titleStyle: TextStyle?): CommonTopBarTypeBuilder {
         titleData = CommonTopBarTitleData(newTitle, titleStyle)
         return this
     }
 
-    fun addMenuButton(@DrawableRes iconId: Int, action: () -> Unit): TopBarTypeBuilder {
+    fun addMenuButton(@DrawableRes iconId: Int, action: () -> Unit): CommonTopBarTypeBuilder {
         if ((menuButtons?.size ?: 0) >= 3) {
             throw IllegalStateException("Too many menu buttons for CommonTopBar")
         }
