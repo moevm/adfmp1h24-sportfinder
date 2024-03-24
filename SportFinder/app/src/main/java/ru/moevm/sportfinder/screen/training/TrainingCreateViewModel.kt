@@ -13,7 +13,7 @@ class TrainingCreateViewModel @Inject constructor() : ViewModel() {
     val state = _state.asStateFlow()
 
     val availableTags = persistentListOf(
-        "Workout", "Run", "Asphalt", "Trees"
+        "Тренировка", "Бег", "Асфальт", "Деревья", "Стадион"
     )
 
     fun onChangeNameClick() {

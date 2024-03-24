@@ -2,7 +2,9 @@ package ru.moevm.sportfinder.screen.common_components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -42,7 +44,9 @@ fun SelectListAlertDialog(
         ) {
             itemsIndexed(listItems) { i, item ->
                 Row(
-                    modifier = Modifier.clickable {
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
                         checkedList[i] = !checkedList[i]
                     },
                     verticalAlignment = Alignment.CenterVertically
@@ -56,19 +60,24 @@ fun SelectListAlertDialog(
                 }
             }
             item {
-                CommonButton(
-                    onClick = {
-                        val result = mutableListOf<Int>()
-                        checkedList.forEachIndexed { index, state ->
-                            if (state) {
-                                result.add(index)
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.BottomEnd
+                ) {
+                    CommonButton(
+                        onClick = {
+                            val result = mutableListOf<Int>()
+                            checkedList.forEachIndexed { index, state ->
+                                if (state) {
+                                    result.add(index)
+                                }
                             }
-                        }
-                        onSaveClick(result)
-                        onDismiss()
-                    },
-                    buttonText = "Сохранить"
-                )
+                            onSaveClick(result)
+                            onDismiss()
+                        },
+                        buttonText = "Сохранить"
+                    )
+                }
             }
         }
     }

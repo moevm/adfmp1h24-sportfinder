@@ -60,7 +60,7 @@ fun TrainingCreateScreen(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
             .verticalScroll(verticalScroll)
-            .padding(4.dp)
+            .padding(12.dp)
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -70,7 +70,7 @@ fun TrainingCreateScreen(
                 CommonTextField(
                     modifier = Modifier.fillMaxWidth(),
                     text = name,
-                    hint = "Введите имя",
+                    hint = "Введите название",
                     onTextChanged = onChangeName,
                 )
             } else {
@@ -80,7 +80,11 @@ fun TrainingCreateScreen(
             CommonButton(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = onChangeNameClick,
-                buttonText = "Изменить название"
+                buttonText = if (isEditNameMode) {
+                    "Сохранить"
+                } else {
+                    "Изменить название"
+                }
             )
         }
 
@@ -88,20 +92,25 @@ fun TrainingCreateScreen(
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             Text(text = "Теги:", fontSize = 18.sp)
-            LazyRow(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                itemsIndexed(tags) { index, tag ->
-                    Chip(
-                        colors = ChipDefaults.chipColors(
-                            backgroundColor = SportFinderLightColorScheme.primary,
-                            leadingIconContentColor = SportFinderLightColorScheme.onPrimary
-                        ),
-                        onClick = {},
-                        leadingIcon = { Icon(Icons.Outlined.Clear, null, modifier = Modifier.clickable { onRemoveTagClick(index) }) }
-                    ) {
-                        Text(tag, color = SportFinderLightColorScheme.onPrimary)
+            if (tags.isEmpty()) {
+                Text(text = "(Пусто)", fontSize = 18.sp)
+            } else {
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                    itemsIndexed(tags) { index, tag ->
+                        Chip(
+                            colors = ChipDefaults.chipColors(
+                                backgroundColor = SportFinderLightColorScheme.primary,
+                                leadingIconContentColor = SportFinderLightColorScheme.onPrimary
+                            ),
+                            onClick = {},
+                            leadingIcon = { Icon(Icons.Outlined.Clear, null, modifier = Modifier.clickable { onRemoveTagClick(index) }) }
+                        ) {
+                            Text(tag, color = SportFinderLightColorScheme.onPrimary)
+                        }
                     }
                 }
             }
+
             CommonButton(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = onShowSelectTagsDialogClick,
@@ -127,7 +136,11 @@ fun TrainingCreateScreen(
             CommonButton(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = onChangeDescriptionClick,
-                buttonText = "Добавить шаг"
+                buttonText = if (isEditDescriptionMode) {
+                    "Сохранить"
+                } else {
+                    "Изменить шаги"
+                }
             )
         }
 
@@ -146,13 +159,13 @@ private fun PreviewTrainingCreateScreen() {
         state = TrainingCreateState(
             name = "MyTraining",
             isEditNameMode = false,
-            tags = listOf("Running", "Workout"),
+            tags = listOf("Бег", "Тренировка"),
             "1. MyDescription\n" +
                     "2. MySecondDescription",
             isEditDescriptionMode = false,
             isSelectTagDialogShown = false
         ),
-        persistentListOf("Running", "Workout", "Trees"),
+        persistentListOf("Тренировка", "Бег", "Асфальт", "Деревья", "Стадион"),
         {}, {}, {}, {}, {}, {}, {}, {}, {}
     )
 }
