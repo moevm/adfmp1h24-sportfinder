@@ -1,4 +1,4 @@
-package ru.moevm.sportfinder.screen.sport_courts
+package ru.moevm.sportfinder.screen.running
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
@@ -8,14 +8,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -26,7 +25,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.persistentListOf
@@ -36,14 +34,14 @@ import ru.moevm.sportfinder.screen.common_components.shimmerEffect
 import ru.moevm.sportfinder.ui.theme.SportFinderLightColorScheme
 
 @Composable
-fun SportCourtsListScreen(
-    state: SportCourtListState,
+fun RunningListScreen(
+    state: RunningListState,
     onTextForFilterChanged: (String) -> Unit,
     onFilterApply: () -> Unit,
-    navigateToSportCourtMapScreen: () -> Unit,
-    navigateToSportCourtInfoScreen: (Long) -> Unit,
+    navigateToRunningInfoScreen: (Long) -> Unit,
+    navigateToRunningCreateScreen: () -> Unit,
 ) {
-    val (listOfSportCourt, textForFilter, isLoading) = state
+    val (listOfRunning, textForFilter, isLoading) = state
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -68,10 +66,10 @@ fun SportCourtsListScreen(
                         )
                     }
                 } else {
-                    items(listOfSportCourt) { sportCourtListItem ->
-                        SportCourtListItem(
-                            sportCourtListItem = sportCourtListItem,
-                            navigateToSportCourtInfoScreen = navigateToSportCourtInfoScreen
+                    items(listOfRunning) { runningListItem ->
+                        RunningListItem(
+                            runningListItem = runningListItem,
+                            navigateToRunningInfoScreen = navigateToRunningInfoScreen
                         )
                     }
                 }
@@ -86,19 +84,14 @@ fun SportCourtsListScreen(
                 backgroundColor = SportFinderLightColorScheme.primary,
                 contentColor = SportFinderLightColorScheme.onPrimary
             ),
-            shape = RoundedCornerShape(28.dp),
-            onClick = navigateToSportCourtMapScreen
+            shape = CircleShape,
+            onClick = navigateToRunningCreateScreen
         ) {
             Row {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_sport_court_screen_map),
+                    painter = painterResource(id = R.drawable.ic_running_screen_add),
                     tint = SportFinderLightColorScheme.onPrimary,
                     contentDescription = null
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = stringResource(id = R.string.sport_court_screen_map_button_title).uppercase(),
-                    color = SportFinderLightColorScheme.onPrimary
                 )
             }
         }
@@ -107,17 +100,17 @@ fun SportCourtsListScreen(
 }
 
 @Composable
-private fun SportCourtListItem(
-    sportCourtListItem: SportCourtListItemVO,
-    navigateToSportCourtInfoScreen: (Long) -> Unit,
+private fun RunningListItem(
+    runningListItem: RunningListItemVO,
+    navigateToRunningInfoScreen: (Long) -> Unit,
 ) {
-    val (courtId, name, tags, temperature) = sportCourtListItem
+    val (runningId, name, tags, distance, temperature) = runningListItem
 
     Box(
         modifier = Modifier
             .border(BorderStroke(2.dp, SportFinderLightColorScheme.primary), RoundedCornerShape(5))
             .fillMaxWidth()
-            .clickable { navigateToSportCourtInfoScreen(courtId) }
+            .clickable { navigateToRunningInfoScreen(runningId) }
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 8.dp)
@@ -148,6 +141,19 @@ private fun SportCourtListItem(
             ) {
                 val courtAttributesModifier = Modifier.padding(end = 8.dp)
                 val courtIconsAttributesModifier = Modifier.padding(end = 8.dp)
+                distance?.let {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_sport_court_screen_distance),
+                        contentDescription = "Map sign",
+                        tint = SportFinderLightColorScheme.primary,
+                        modifier = courtIconsAttributesModifier
+                    )
+                    Text(
+                        text = distance.toString() + "Km",
+                        modifier = courtAttributesModifier,
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                }
 
                 temperature?.let {
                     Icon(
@@ -172,14 +178,15 @@ private fun SportCourtListItem(
 
 @Preview
 @Composable
-fun SportsCourtListScreenPreview() {
-    SportCourtsListScreen(
-        state = SportCourtListState(
-            listOfSportCourt = persistentListOf(
-                SportCourtListItemVO(
-                    courtId = 0,
+fun PreviewRunningListScreen() {
+    RunningListScreen(
+        state = RunningListState(
+            listOfRunning = persistentListOf(
+                RunningListItemVO(
+                    runningId = 0,
                     name = "Старая деревня",
                     tags = persistentListOf("Вкусно"),
+                    distance = 0.3F,
                     temperature = 13.4F,
                 ),
             ),
@@ -188,19 +195,20 @@ fun SportsCourtListScreenPreview() {
         ),
         onTextForFilterChanged = {},
         onFilterApply = {},
-        navigateToSportCourtMapScreen = {},
-        navigateToSportCourtInfoScreen = {}
+        navigateToRunningInfoScreen = {},
+        navigateToRunningCreateScreen = {}
     )
 }
 
 @Composable
 @Preview
-private fun SportCourtListItemPreview() {
-    SportCourtListItem(
-        SportCourtListItemVO(
-            courtId = 0,
+private fun PreviewRunningListItem() {
+    RunningListItem(
+        RunningListItemVO(
+            runningId = 0,
             name = "Старая деревня",
             tags = persistentListOf("Вкусно"),
+            distance = 0.3F,
             temperature = 13.4F,
         ),
         {},
