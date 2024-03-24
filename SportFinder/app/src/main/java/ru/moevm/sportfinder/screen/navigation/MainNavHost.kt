@@ -35,6 +35,8 @@ import ru.moevm.sportfinder.screen.sport_courts.SportCourtMapViewModel
 import ru.moevm.sportfinder.screen.sport_courts.SportCourtsListScreen
 import ru.moevm.sportfinder.screen.training.TrainingCreateScreen
 import ru.moevm.sportfinder.screen.training.TrainingCreateViewModel
+import ru.moevm.sportfinder.screen.training.TrainingInfoScreen
+import ru.moevm.sportfinder.screen.training.TrainingInfoViewModel
 import ru.moevm.sportfinder.screen.training.TrainingListScreen
 import ru.moevm.sportfinder.screen.training.TrainingListViewModel
 
@@ -182,7 +184,7 @@ fun MainNavHost(
                     onTextForFilterChanged = viewModel::onTextForFilterChanged,
                     onFilterApply = viewModel::onFilterApply,
                     navigateToCreateTrainingScreen = navigationController::navigateToTrainingCreate,
-                    navigateToTrainingInfoScreen = { /*TODO*/ }
+                    navigateToTrainingInfoScreen = { id -> navigationController.navigateToTrainingInfo() }
                 )
             }
 
@@ -210,6 +212,21 @@ fun MainNavHost(
                         viewModel.onSaveClick()
                         navigationController.navigateToTraining()
                     }
+                )
+            }
+
+            composable(route = Screen.TRAINING_INFO_SCREEN.route) {
+                val viewModel = hiltViewModel<TrainingInfoViewModel>()
+                val state by viewModel.state.collectAsStateWithLifecycle()
+                updateBottomBarVisible(true)
+                val topBarType = CommonTopBarTypeBuilder()
+                    .setBackButtonAsNavigationButton(navigationController::navigateBack)
+                    .addMenuButton(R.drawable.ic_top_bar_share) { /*TODO*/ }
+                    .build()
+                updateTopBarType(true, topBarType)
+
+                TrainingInfoScreen(
+                    state = state,
                 )
             }
         }
