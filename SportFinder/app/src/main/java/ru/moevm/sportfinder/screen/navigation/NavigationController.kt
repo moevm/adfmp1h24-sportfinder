@@ -48,4 +48,13 @@ class NavigationController(
 
     fun navigateToTrainingList() =
         navHostController.navigate(Screen.TRAINING_LIST_SCREEN.route)
+
+    fun navigateToTrainingCreate() =
+        navHostController.navigate(Screen.TRAINING_CREATE_SCREEN.route)
+
+    fun navigateToRunning() =
+        navHostController.navigate(ScreensSubgraphs.RUNNING.route)
+
+    fun navigateToRunningList() =
+        navHostController.navigate(Screen.RUNNING_LIST_SCREEN.route)
 }

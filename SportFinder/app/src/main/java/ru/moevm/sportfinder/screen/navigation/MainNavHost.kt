@@ -22,6 +22,8 @@ import ru.moevm.sportfinder.screen.common_components.common_top_bar.CommonTopBar
 import ru.moevm.sportfinder.screen.common_components.common_top_bar.TopBarTypeBuilder
 import ru.moevm.sportfinder.screen.profile.ProfileScreen
 import ru.moevm.sportfinder.screen.profile.ProfileViewModel
+import ru.moevm.sportfinder.screen.running.RunningListScreen
+import ru.moevm.sportfinder.screen.running.RunningListViewModel
 import ru.moevm.sportfinder.screen.settings.MainSettingsScreen
 import ru.moevm.sportfinder.screen.settings.SettingsViewModel
 import ru.moevm.sportfinder.screen.settings.UpdateProfileSettingsScreen
@@ -179,6 +181,26 @@ fun MainNavHost(
                     onFilterApply = viewModel::onFilterApply,
                     navigateToAddTrainingScreen = { /*TODO*/ },
                     navigateToTrainingInfoScreen = { /*TODO*/ }
+                )
+            }
+        }
+
+        navigation(
+            startDestination = Screen.RUNNING_LIST_SCREEN.route,
+            route = ScreensSubgraphs.RUNNING.route
+        ) {
+            composable(route = Screen.RUNNING_LIST_SCREEN.route) {
+                val viewModel = hiltViewModel<RunningListViewModel>()
+                val state by viewModel.state.collectAsStateWithLifecycle()
+                updateBottomBarVisible(true)
+                updateTopBarType(false, null)
+
+                RunningListScreen(
+                    state = state,
+                    onTextForFilterChanged = viewModel::onTextForFilterChanged,
+                    onFilterApply = viewModel::onFilterApply,
+                    navigateToRunningInfoScreen = { /*TODO*/ },
+                    navigateToRunningCreateScreen = { /*TODO*/ }
                 )
             }
         }

@@ -90,7 +90,7 @@ class MainActivity : ComponentActivity() {
         ),
         BottomNavItem(
             R.drawable.ic_bottom_bar_running_track,
-            {  }
+            navigationController::navigateToRunning
         ),
         BottomNavItem(
             R.drawable.ic_bottom_bar_training,
