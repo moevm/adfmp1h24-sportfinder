@@ -48,4 +48,7 @@ class NavigationController(
 
     fun navigateToTrainingList() =
         navHostController.navigate(Screen.TRAINING_LIST_SCREEN.route)
+
+    fun navigateToTrainingCreate() =
+        navHostController.navigate(Screen.TRAINING_CREATE_SCREEN.route)
 }

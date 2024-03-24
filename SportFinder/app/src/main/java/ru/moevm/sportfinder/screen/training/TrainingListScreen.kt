@@ -39,7 +39,7 @@ fun TrainingListScreen(
     state: TrainingListState,
     onTextForFilterChanged: (String) -> Unit,
     onFilterApply: () -> Unit,
-    navigateToAddTrainingScreen: () -> Unit,
+    navigateToCreateTrainingScreen: () -> Unit,
     navigateToTrainingInfoScreen: (Long) -> Unit,
 ) {
     val (listOfTraining, textForFilter, isLoading) = state
@@ -60,7 +60,7 @@ fun TrainingListScreen(
                     Button(
                         modifier = Modifier
                             .fillMaxWidth(),
-                        onClick = navigateToAddTrainingScreen,
+                        onClick = navigateToCreateTrainingScreen,
                         colors = ButtonDefaults.buttonColors(backgroundColor = SportFinderLightColorScheme.primary)
                     ) {
                         Text(
@@ -188,7 +188,7 @@ private fun TrainingListScreenPreview() {
         ),
         onTextForFilterChanged = {},
         onFilterApply = {},
-        navigateToAddTrainingScreen = {},
+        navigateToCreateTrainingScreen = {},
         navigateToTrainingInfoScreen = {}
     )
 }
