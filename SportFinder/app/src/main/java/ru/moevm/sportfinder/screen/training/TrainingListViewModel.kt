@@ -54,28 +54,24 @@ class TrainingListViewModel @Inject constructor() : ViewModel() {
             trainingId = 0,
             name = "Беговая тренировка",
             tags = persistentListOf("Бег", "Занятия"),
-            distance = 1.6f,
             temperature = 6f,
         ),
         TrainingListItemVO(
             trainingId = 1,
             name = "Скакалка",
             tags = persistentListOf("Асфальт", "Занятия", "Тренажёры"),
-            distance = 2.3f,
             temperature = 3f,
         ),
         TrainingListItemVO(
             trainingId = 2,
             name = "На выносливость, свежий воздух",
             tags = persistentListOf("Занятия", "Деревья"),
-            distance = 2f,
             temperature = 5f,
         ),
         TrainingListItemVO(
             trainingId = 3,
             name = "Занятия на стадионе",
             tags = persistentListOf("Асфальт", "Занятия"),
-            distance = 3.9f,
             temperature = 4f,
         ),
     )

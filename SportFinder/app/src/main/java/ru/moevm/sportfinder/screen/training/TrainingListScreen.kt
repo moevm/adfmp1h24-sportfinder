@@ -98,13 +98,13 @@ private fun TrainingListItem(
     trainingListItem: TrainingListItemVO,
     navigateToTrainingInfoScreen: (Long) -> Unit,
 ) {
-    val (courtId, name, tags, distance, temperature) = trainingListItem
+    val (runningId, name, tags, temperature) = trainingListItem
 
     Box(
         modifier = Modifier
             .border(BorderStroke(2.dp, SportFinderLightColorScheme.primary), RoundedCornerShape(5))
             .fillMaxWidth()
-            .clickable { navigateToTrainingInfoScreen(courtId) }
+            .clickable { navigateToTrainingInfoScreen(runningId) }
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 8.dp)
@@ -134,19 +134,6 @@ private fun TrainingListItem(
             ) {
                 val courtAttributesModifier = Modifier.padding(end = 8.dp)
                 val courtIconsAttributesModifier = Modifier.padding(end = 8.dp)
-                distance?.let {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_sport_court_screen_distance),
-                        contentDescription = "Map sign",
-                        tint = SportFinderLightColorScheme.primary,
-                        modifier = courtIconsAttributesModifier
-                    )
-                    Text(
-                        text = distance.toString() + "Km",
-                        modifier = courtAttributesModifier,
-                        style = MaterialTheme.typography.titleMedium,
-                    )
-                }
 
                 temperature?.let {
                     Icon(
@@ -179,7 +166,6 @@ private fun TrainingListScreenPreview() {
                     trainingId = 0,
                     name = "Старая деревня",
                     tags = persistentListOf("Вкусно"),
-                    distance = 0.3F,
                     temperature = 13.4F,
                 ),
             ),
@@ -201,7 +187,6 @@ private fun TrainingListItemPreview() {
             trainingId = 0,
             name = "Старая деревня",
             tags = persistentListOf("Вкусно"),
-            distance = 0.3F,
             temperature = 13.4F,
         ),
         {},
