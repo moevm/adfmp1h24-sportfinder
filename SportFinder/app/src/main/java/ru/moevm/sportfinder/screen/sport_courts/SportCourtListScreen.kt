@@ -1,7 +1,6 @@
 package ru.moevm.sportfinder.screen.sport_courts
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -113,7 +111,7 @@ private fun SportCourtListItem(
     sportCourtListItem: SportCourtListItemVO,
     navigateToSportCourtInfoScreen: (Long) -> Unit,
 ) {
-    val (courtId, name, tags, distance, temperature, resourceId) = sportCourtListItem
+    val (courtId, name, tags, temperature) = sportCourtListItem
 
     Box(
         modifier = Modifier
@@ -121,19 +119,13 @@ private fun SportCourtListItem(
             .fillMaxWidth()
             .clickable { navigateToSportCourtInfoScreen(courtId) }
     ) {
-        Column {
+        Column(
+            modifier = Modifier.padding(horizontal = 8.dp)
+        ) {
             Row {
-                val longImageSide = 100
-                Image(
-                    painter = painterResource(id = resourceId),
-                    contentDescription = "Court image",
-                    modifier = Modifier
-                        .padding(10.dp)
-                        .size(longImageSide.dp, longImageSide.dp * 2 / 3)
-                )
                 Column(
                     modifier = Modifier
-                        .padding(top = 5.dp)
+                        .padding(top = 4.dp)
                         .fillMaxWidth()
                 ) {
                     Text(
@@ -152,23 +144,10 @@ private fun SportCourtListItem(
 
             }
             Row(
-                modifier = Modifier.padding(5.dp)
+                modifier = Modifier.padding(vertical = 4.dp)
             ) {
-                val courtAttributesModifier = Modifier.padding(end = 10.dp)
+                val courtAttributesModifier = Modifier.padding(end = 8.dp)
                 val courtIconsAttributesModifier = Modifier.padding(end = 8.dp)
-                distance?.let {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_sport_court_screen_distance),
-                        contentDescription = "Map sign",
-                        tint = SportFinderLightColorScheme.primary,
-                        modifier = courtIconsAttributesModifier
-                    )
-                    Text(
-                        text = distance.toString() + "Km",
-                        modifier = courtAttributesModifier,
-                        style = MaterialTheme.typography.titleMedium,
-                    )
-                }
 
                 temperature?.let {
                     Icon(
@@ -201,9 +180,7 @@ fun SportsCourtListScreenPreview() {
                     courtId = 0,
                     name = "Старая деревня",
                     tags = persistentListOf("Вкусно"),
-                    distance = 0.3F,
                     temperature = 13.4F,
-                    imagePlaceholder = R.drawable.no_image_placeholder
                 ),
             ),
             textForFilter = "",
@@ -224,9 +201,7 @@ private fun SportCourtListItemPreview() {
             courtId = 0,
             name = "Старая деревня",
             tags = persistentListOf("Вкусно"),
-            distance = 0.3F,
             temperature = 13.4F,
-            imagePlaceholder = R.drawable.no_image_placeholder
         ),
         {},
     )

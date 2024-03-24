@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import ru.moevm.sportfinder.R
 import javax.inject.Inject
 
 @HiltViewModel
@@ -55,33 +54,25 @@ class SportCourtListViewModel @Inject constructor() : ViewModel() {
             courtId = 0,
             name = "Старая деревня",
             tags = persistentListOf("Бег", "Занятия"),
-            distance = 1.6f,
             temperature = 6f,
-            imagePlaceholder = R.drawable.no_image_placeholder
         ),
         SportCourtListItemVO(
             courtId = 1,
             name = "Пионерский парк",
             tags = persistentListOf("Асфальт", "Занятия", "Тренажёры"),
-            distance = 2.3f,
             temperature = 3f,
-            imagePlaceholder = R.drawable.no_image_placeholder
         ),
         SportCourtListItemVO(
             courtId = 2,
             name = "Октябрьский парк",
             tags = persistentListOf("Занятия", "Деревья"),
-            distance = 2f,
             temperature = 5f,
-            imagePlaceholder = R.drawable.no_image_placeholder
         ),
         SportCourtListItemVO(
             courtId = 3,
             name = "Стадион у школы",
             tags = persistentListOf("Асфальт", "Занятия"),
-            distance = 3.9f,
             temperature = 4f,
-            imagePlaceholder = R.drawable.no_image_placeholder
         ),
     )
 }
