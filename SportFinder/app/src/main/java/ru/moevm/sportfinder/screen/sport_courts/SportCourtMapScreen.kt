@@ -34,9 +34,9 @@ fun SportCourtMapScreen(
     onFilterApply: () -> Unit,
     navigateToSportCourtListScreen: () -> Unit,
 ) {
-    val cameraPosition = rememberCameraPositionState().apply {
+    val cameraPosition = rememberCameraPositionState(init = {
         position = CameraPosition.fromLatLngZoom(startPoint, 15.0f)
-    }
+    })
     val (textForFilter) = state
 
 

@@ -11,6 +11,7 @@ enum class Screen(val route: String) {
     TRAINING_CREATE_SCREEN("training_create_screen"),
     TRAINING_INFO_SCREEN("training_info_screen"),
     RUNNING_LIST_SCREEN("running_list_screen"),
+    RUNNING_CREATE_SCREEN("running_create_screen"),
     SETTINGS_MAIN_SCREEN("settings_main_screen"),
     SETTINGS_UPDATE_PROFILE_SCREEN("settings_update_profile_screen")
 }

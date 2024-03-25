@@ -60,4 +60,7 @@ class NavigationController(
 
     fun navigateToRunningList() =
         navHostController.navigate(Screen.RUNNING_LIST_SCREEN.route)
+
+    fun navigateToRunningCreate() =
+        navHostController.navigate(Screen.RUNNING_CREATE_SCREEN.route)
 }

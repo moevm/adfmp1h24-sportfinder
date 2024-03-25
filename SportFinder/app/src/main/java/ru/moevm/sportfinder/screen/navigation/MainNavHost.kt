@@ -22,6 +22,8 @@ import ru.moevm.sportfinder.screen.common_components.common_top_bar.CommonTopBar
 import ru.moevm.sportfinder.screen.common_components.common_top_bar.CommonTopBarTypeBuilder
 import ru.moevm.sportfinder.screen.profile.ProfileScreen
 import ru.moevm.sportfinder.screen.profile.ProfileViewModel
+import ru.moevm.sportfinder.screen.running.RunningCreateScreen
+import ru.moevm.sportfinder.screen.running.RunningCreateViewModel
 import ru.moevm.sportfinder.screen.running.RunningListScreen
 import ru.moevm.sportfinder.screen.running.RunningListViewModel
 import ru.moevm.sportfinder.screen.settings.MainSettingsScreen
@@ -246,7 +248,30 @@ fun MainNavHost(
                     onTextForFilterChanged = viewModel::onTextForFilterChanged,
                     onFilterApply = viewModel::onFilterApply,
                     navigateToRunningInfoScreen = { /*TODO*/ },
-                    navigateToRunningCreateScreen = { /*TODO*/ }
+                    navigateToRunningCreateScreen = navigationController::navigateToRunningCreate
+                )
+            }
+
+            composable(route = Screen.RUNNING_CREATE_SCREEN.route) {
+                val viewModel = hiltViewModel<RunningCreateViewModel>()
+                val state by viewModel.state.collectAsStateWithLifecycle()
+                updateBottomBarVisible(true)
+                val topBarType = CommonTopBarTypeBuilder()
+                    .setBackButtonAsNavigationButton(navigationController::navigateBack)
+                    .build()
+                updateTopBarType(true, topBarType)
+
+                RunningCreateScreen(
+                    state = state,
+                    startPoint = viewModel.startPoint,
+                    onTitleChanged = viewModel::onTitleChanged,
+                    addPoint = viewModel::addPoint,
+                    removePoint = viewModel::removePoint,
+                    onShowSelectTagsDialogClick = viewModel::onShowSelectTagsDialogClick,
+                    onSaveTagsDialogClick = viewModel::onSaveTagsDialogClick,
+                    onDismissTagsDialogClick = viewModel::onDismissTagsDialogClick,
+                    onRemoveTagClick = viewModel::onRemoveTagClick,
+                    onSaveClick = { /*TODO*/ },
                 )
             }
         }
