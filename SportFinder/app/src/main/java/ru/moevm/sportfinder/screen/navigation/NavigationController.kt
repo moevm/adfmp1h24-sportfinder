@@ -66,4 +66,7 @@ class NavigationController(
 
     fun navigateToRunningInfo() =
         navHostController.navigate(Screen.RUNNING_INFO_SCREEN.route)
+
+    fun navigateToAboutScreen() =
+        navHostController.navigate(Screen.ABOUT.route)
 }

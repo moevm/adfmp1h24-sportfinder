@@ -14,7 +14,8 @@ enum class Screen(val route: String) {
     RUNNING_CREATE_SCREEN("running_create_screen"),
     RUNNING_INFO_SCREEN("running_info_screen"),
     SETTINGS_MAIN_SCREEN("settings_main_screen"),
-    SETTINGS_UPDATE_PROFILE_SCREEN("settings_update_profile_screen")
+    SETTINGS_UPDATE_PROFILE_SCREEN("settings_update_profile_screen"),
+    ABOUT("about_screen")
 }
 
 enum class ScreensSubgraphs(val route: String) {
