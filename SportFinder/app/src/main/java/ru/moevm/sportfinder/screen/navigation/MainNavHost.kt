@@ -24,6 +24,8 @@ import ru.moevm.sportfinder.screen.profile.ProfileScreen
 import ru.moevm.sportfinder.screen.profile.ProfileViewModel
 import ru.moevm.sportfinder.screen.running.RunningCreateScreen
 import ru.moevm.sportfinder.screen.running.RunningCreateViewModel
+import ru.moevm.sportfinder.screen.running.RunningInfoScreen
+import ru.moevm.sportfinder.screen.running.RunningInfoViewModel
 import ru.moevm.sportfinder.screen.running.RunningListScreen
 import ru.moevm.sportfinder.screen.running.RunningListViewModel
 import ru.moevm.sportfinder.screen.settings.MainSettingsScreen
@@ -247,7 +249,7 @@ fun MainNavHost(
                     state = state,
                     onTextForFilterChanged = viewModel::onTextForFilterChanged,
                     onFilterApply = viewModel::onFilterApply,
-                    navigateToRunningInfoScreen = { /*TODO*/ },
+                    navigateToRunningInfoScreen = { navigationController.navigateToRunningInfo() },
                     navigateToRunningCreateScreen = navigationController::navigateToRunningCreate
                 )
             }
@@ -272,6 +274,21 @@ fun MainNavHost(
                     onDismissTagsDialogClick = viewModel::onDismissTagsDialogClick,
                     onRemoveTagClick = viewModel::onRemoveTagClick,
                     onSaveClick = { /*TODO*/ },
+                )
+            }
+
+            composable(route = Screen.RUNNING_INFO_SCREEN.route) {
+                val viewModel = hiltViewModel<RunningInfoViewModel>()
+                val state by viewModel.state.collectAsStateWithLifecycle()
+                updateBottomBarVisible(true)
+                val topBarType = CommonTopBarTypeBuilder()
+                    .setBackButtonAsNavigationButton(navigationController::navigateBack)
+                    .addMenuButton(R.drawable.ic_top_bar_share) { /*TODO*/ }
+                    .build()
+                updateTopBarType(true, topBarType)
+
+                RunningInfoScreen(
+                    state = state
                 )
             }
         }
