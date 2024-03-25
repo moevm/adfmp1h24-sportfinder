@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -24,10 +25,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.persistentListOf
 import ru.moevm.sportfinder.R
 import ru.moevm.sportfinder.screen.common_components.TopSearchBar
@@ -56,20 +55,6 @@ fun TrainingListScreen(
                 contentPadding = PaddingValues(8.dp),
                 verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
-                item {
-                    Button(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        onClick = navigateToCreateTrainingScreen,
-                        colors = ButtonDefaults.buttonColors(backgroundColor = SportFinderLightColorScheme.primary)
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.training_screen_list_add_training_title),
-                            fontSize = 14.sp,
-                            color = SportFinderLightColorScheme.onPrimary
-                        )
-                    }
-                }
                 if (isLoading) {
                     items(3) {
                         Box(
@@ -88,6 +73,26 @@ fun TrainingListScreen(
                         )
                     }
                 }
+            }
+        }
+
+        Button(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(end = 16.dp, bottom = 16.dp),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = SportFinderLightColorScheme.primary,
+                contentColor = SportFinderLightColorScheme.onPrimary
+            ),
+            shape = CircleShape,
+            onClick = navigateToCreateTrainingScreen
+        ) {
+            Row {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_running_screen_add),
+                    tint = SportFinderLightColorScheme.onPrimary,
+                    contentDescription = null
+                )
             }
         }
     }

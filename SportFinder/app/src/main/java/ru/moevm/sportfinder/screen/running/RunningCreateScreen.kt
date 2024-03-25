@@ -122,19 +122,19 @@ fun RunningCreateScreen(
                 .fillMaxWidth()
                 .padding(16.dp)
                 .clip(RoundedCornerShape(8.dp))
+                .background(SportFinderLightColorScheme.onPrimary.copy(alpha = 0.8f))
+                .padding(8.dp)
                 .align(Alignment.BottomCenter)
-                .background(SportFinderLightColorScheme.onPrimary.copy(alpha = 0.5f))
         ) {
             Row {
                 Icon(
                     painter = painterResource(R.drawable.ic_sport_court_screen_distance),
                     contentDescription = "Map sign",
                     tint = SportFinderLightColorScheme.primary,
-                    modifier = Modifier.padding(start = 8.dp, top = 8.dp)
                 )
                 Text(
                     text = "Дистанция: ${"%.2f".format(distance)}м",
-                    modifier = Modifier.padding(start = 8.dp, top = 8.dp),
+                    modifier = Modifier.padding(start = 4.dp),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
                     overflow = TextOverflow.Ellipsis
@@ -142,7 +142,6 @@ fun RunningCreateScreen(
                 Spacer(modifier = Modifier.weight(1f))
                 Box(
                     modifier = Modifier
-                        .padding(4.dp)
                         .size(40.dp)
                         .background(SportFinderLightColorScheme.primary, shape = CircleShape)
                         .paint(
