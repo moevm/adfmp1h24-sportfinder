@@ -224,9 +224,12 @@ fun MainNavHost(
                 val viewModel = hiltViewModel<TrainingInfoViewModel>()
                 val state by viewModel.state.collectAsStateWithLifecycle()
                 updateBottomBarVisible(true)
+                val context = LocalContext.current
                 val topBarType = CommonTopBarTypeBuilder()
                     .setBackButtonAsNavigationButton(navigationController::navigateBack)
-                    .addMenuButton(R.drawable.ic_top_bar_share) { /*TODO*/ }
+                    .addMenuButton(R.drawable.ic_top_bar_share) {
+                        Toast.makeText(context, "https://sportfinder.com", Toast.LENGTH_LONG).show()
+                    }
                     .build()
                 updateTopBarType(true, topBarType)
 
@@ -282,9 +285,12 @@ fun MainNavHost(
                 val viewModel = hiltViewModel<RunningInfoViewModel>()
                 val state by viewModel.state.collectAsStateWithLifecycle()
                 updateBottomBarVisible(true)
+                val context = LocalContext.current
                 val topBarType = CommonTopBarTypeBuilder()
                     .setBackButtonAsNavigationButton(navigationController::navigateBack)
-                    .addMenuButton(R.drawable.ic_top_bar_share) { /*TODO*/ }
+                    .addMenuButton(R.drawable.ic_top_bar_share) {
+                        Toast.makeText(context, "https://sportfinder.com", Toast.LENGTH_LONG).show()
+                    }
                     .build()
                 updateTopBarType(true, topBarType)
 
