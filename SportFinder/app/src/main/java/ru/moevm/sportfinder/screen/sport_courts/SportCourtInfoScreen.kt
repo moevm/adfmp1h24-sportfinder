@@ -58,9 +58,10 @@ fun SportCourtInfoScreen(
         }
     }
 
-    val cameraPosition = rememberCameraPositionState().apply {
+    val cameraPosition = rememberCameraPositionState(init = {
         position = CameraPosition.fromLatLngZoom(courtInitialPoint, 15.0f)
-    }
+    })
+
     val scrollState = rememberScrollState()
     Column(
         modifier = Modifier
