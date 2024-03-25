@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import ru.moevm.sportfinder.R
+import ru.moevm.sportfinder.screen.about.AboutScreen
 import ru.moevm.sportfinder.screen.auth.AuthorizationScreen
 import ru.moevm.sportfinder.screen.auth.AuthorizationViewModel
 import ru.moevm.sportfinder.screen.auth.RegistrationScreen
@@ -318,7 +319,8 @@ fun MainNavHost(
                             navigationController.navigateToAuthScreen()
                         }
                     },
-                    navigateToUpdateProfile = navigationController::navigateToSettingsUpdateProfile
+                    navigateToUpdateProfile = navigationController::navigateToSettingsUpdateProfile,
+                    navigateToAboutScreen = navigationController::navigateToAboutScreen
                 )
             }
             composable(route = Screen.SETTINGS_UPDATE_PROFILE_SCREEN.route) {
@@ -346,6 +348,15 @@ fun MainNavHost(
                     }
                 )
             }
+        }
+
+        composable(route = Screen.ABOUT.route) {
+            updateBottomBarVisible(true)
+            val topBarType = CommonTopBarTypeBuilder()
+                .setBackButtonAsNavigationButton(navigationController::navigateBack)
+                .build()
+            updateTopBarType(true, topBarType)
+            AboutScreen()
         }
     }
 }

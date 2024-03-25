@@ -17,7 +17,8 @@ import ru.moevm.sportfinder.screen.settings.components.SettingsGroup
 @Composable
 fun MainSettingsScreen(
     onLogOutClick: () -> Unit,
-    navigateToUpdateProfile: () -> Unit
+    navigateToUpdateProfile: () -> Unit,
+    navigateToAboutScreen:  () -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.padding(16.dp)
@@ -30,6 +31,10 @@ fun MainSettingsScreen(
                     SettingNavigationItem(
                         title = stringResource(id = R.string.settings_screen_common_update_profile_title),
                         navigateTo = navigateToUpdateProfile
+                    )
+                    SettingNavigationItem(
+                        title = "About",
+                        navigateTo = navigateToAboutScreen
                     )
                     SettingLabelItem(
                         title = stringResource(id = R.string.settings_screen_common_logout_title),
@@ -45,5 +50,9 @@ fun MainSettingsScreen(
 @Preview
 @Composable
 private fun PreviewSettingScreen() {
-    MainSettingsScreen(onLogOutClick = {}, navigateToUpdateProfile = {})
+    MainSettingsScreen(
+        onLogOutClick = {},
+        navigateToUpdateProfile = {},
+        navigateToAboutScreen = {  }
+    )
 }
