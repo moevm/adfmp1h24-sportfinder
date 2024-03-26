@@ -5,5 +5,5 @@ import com.google.gson.annotations.SerializedName
 
 data class SportCourtDataDTO(
     @SerializedName("place")
-    val place: SportCourtPlaceDTO
+    val place: SportCourtPlaceDTO?
 )

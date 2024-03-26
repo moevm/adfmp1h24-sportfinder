@@ -7,7 +7,7 @@ import kotlinx.collections.immutable.persistentListOf
 data class SportCourtInfoState(
     val courtName: String = "",
     val courtAddress: String = "",
-    val courtInitialPoint: LatLng = LatLng(0.0, 0.0),
+    val courtInitialPoint: LatLng? = null,
     val courtDistance: Double = 0.0,
     val courtWeatherTemperature: Int = 0,
     val courtAmountFavorites: Int = 0,

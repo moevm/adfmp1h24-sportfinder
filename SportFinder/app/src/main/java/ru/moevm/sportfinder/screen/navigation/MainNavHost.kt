@@ -152,10 +152,6 @@ fun MainNavHost(
                 val state by viewModel.state.collectAsStateWithLifecycle()
                 updateBottomBarVisible(true)
                 updateTopBarType(false, null)
-                val navigateToSportCourtInfo = { courtId: Int ->
-                    viewModel.onItemClicked(courtId)
-                    navigationController.navigateToSportCourtInfo()
-                }
 
                 SportCourtsListScreen(
                     state = state,
