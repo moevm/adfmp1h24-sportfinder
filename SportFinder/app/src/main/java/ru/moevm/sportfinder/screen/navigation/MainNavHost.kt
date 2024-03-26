@@ -2,6 +2,7 @@ package ru.moevm.sportfinder.screen.navigation
 
 import android.widget.Toast
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -66,6 +67,9 @@ fun MainNavHost(
                 val state by viewModel.state.collectAsStateWithLifecycle()
                 updateBottomBarVisible(false)
                 updateTopBarType(false, null)
+                LaunchedEffect(true) {
+                    viewModel.trySignInFromStart()
+                }
 
                 AuthorizationScreen(
                     state = state,
@@ -112,6 +116,10 @@ fun MainNavHost(
                     )
                     .build()
                 updateTopBarType(true, topBarType)
+
+                LaunchedEffect(true) {
+                    viewModel.updateProfileData()
+                }
 
                 ProfileScreen(
                     state = state,
@@ -190,7 +198,9 @@ fun MainNavHost(
                 val state by viewModel.state.collectAsStateWithLifecycle()
                 updateBottomBarVisible(true)
                 updateTopBarType(false, null)
-
+                LaunchedEffect(true) {
+                    viewModel.updateListOfTrainings()
+                }
                 TrainingListScreen(
                     state = state,
                     onTextForFilterChanged = viewModel::onTextForFilterChanged,
@@ -239,6 +249,9 @@ fun MainNavHost(
                     }
                     .build()
                 updateTopBarType(true, topBarType)
+                LaunchedEffect(true) {
+                    viewModel.updateTrainingInfoState()
+                }
 
                 TrainingInfoScreen(
                     state = state,
@@ -255,6 +268,9 @@ fun MainNavHost(
                 val state by viewModel.state.collectAsStateWithLifecycle()
                 updateBottomBarVisible(true)
                 updateTopBarType(false, null)
+                LaunchedEffect(true) {
+                    viewModel.updateListOfRunning()
+                }
 
                 RunningListScreen(
                     state = state,
@@ -273,6 +289,9 @@ fun MainNavHost(
                     .setBackButtonAsNavigationButton(navigationController::navigateBack)
                     .build()
                 updateTopBarType(true, topBarType)
+                LaunchedEffect(true) {
+                    viewModel.getTags()
+                }
 
                 RunningCreateScreen(
                     state = state,
@@ -300,6 +319,9 @@ fun MainNavHost(
                     }
                     .build()
                 updateTopBarType(true, topBarType)
+                LaunchedEffect(true) {
+                    viewModel.initState()
+                }
 
                 RunningInfoScreen(
                     state = state
@@ -349,6 +371,9 @@ fun MainNavHost(
                     stringResource(id = R.string.settings_screen_update_profile_successfully_saved),
                     Toast.LENGTH_SHORT
                 )
+                LaunchedEffect(true) {
+                    viewModel.initUpdateProfileState()
+                }
 
                 UpdateProfileSettingsScreen(
                     state = state,

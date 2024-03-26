@@ -18,11 +18,7 @@ class RunningInfoViewModel @Inject constructor() : ViewModel() {
     private val _state = MutableStateFlow(RunningInfoState())
     val state = _state.asStateFlow()
 
-    init {
-        initState()
-    }
-
-    private fun initState() {
+    fun initState() {
         getRunningInfo()
             .onEach { result ->
                 _state.value = result

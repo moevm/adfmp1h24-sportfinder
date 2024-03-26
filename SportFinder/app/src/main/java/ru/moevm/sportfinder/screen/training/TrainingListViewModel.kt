@@ -20,10 +20,6 @@ class TrainingListViewModel @Inject constructor() : ViewModel() {
     private val _state = MutableStateFlow(TrainingListState())
     val state = _state.asStateFlow()
 
-    init {
-        updateListOfTrainings()
-    }
-
     fun onTextForFilterChanged(newFilter: String) {
         _state.value = _state.value.copy(textForFilter = newFilter)
     }
@@ -36,7 +32,7 @@ class TrainingListViewModel @Inject constructor() : ViewModel() {
 
     }
 
-    private fun updateListOfTrainings() {
+    fun updateListOfTrainings() {
         flow {
             _state.value = _state.value.copy(isLoading = true)
             val fakeData = getFakeData().toPersistentList()

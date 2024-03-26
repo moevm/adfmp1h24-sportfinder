@@ -20,10 +20,6 @@ class RunningListViewModel @Inject constructor() : ViewModel() {
     private val _state = MutableStateFlow(RunningListState())
     val state = _state.asStateFlow()
 
-    init {
-        updateListOfRunning()
-    }
-
     fun onTextForFilterChanged(newFilter: String) {
         _state.value = _state.value.copy(textForFilter = newFilter)
     }
@@ -36,7 +32,7 @@ class RunningListViewModel @Inject constructor() : ViewModel() {
 
     }
 
-    private fun updateListOfRunning() {
+    fun updateListOfRunning() {
         flow {
             _state.value = _state.value.copy(isLoading = true)
             val fakeData = getFakeData().toPersistentList()
