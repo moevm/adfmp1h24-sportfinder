@@ -15,6 +15,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.moevm.sportfinder.common.Constants.SPORT_COURTS_API_URL
 import ru.moevm.sportfinder.common.userProfileDataStore
+import ru.moevm.sportfinder.data.db.ProfileDao
+import ru.moevm.sportfinder.data.db.ProfileDaoImpl
 import ru.moevm.sportfinder.data.remote.ServerApi
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -28,6 +30,13 @@ object AppModule {
     fun providePreferencesUserProfileDataStore(
         @ApplicationContext context: Context
     ): DataStore<Preferences> = context.userProfileDataStore
+
+    @Provides
+    @Singleton
+    fun provideProfileDao(
+        datastore: DataStore<Preferences>
+    ): ProfileDao = ProfileDaoImpl(datastore)
+
     @Provides
     @Singleton
     fun provideOkHttpClient() = OkHttpClient().newBuilder()
