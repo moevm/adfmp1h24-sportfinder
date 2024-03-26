@@ -1,5 +1,6 @@
 package ru.moevm.sportfinder.screen.sport_courts
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,7 +14,11 @@ import ru.moevm.sportfinder.common.Constants
 import javax.inject.Inject
 
 @HiltViewModel
-class SportCourtInfoViewModel @Inject constructor() : ViewModel() {
+class SportCourtInfoViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle
+) : ViewModel() {
+
+    private val sportCourtId = savedStateHandle.get<Int>("sportCourtId")
 
     private val _state = MutableStateFlow(SportCourtInfoState())
     val state = _state.asStateFlow()
