@@ -64,8 +64,8 @@ class NavigationController(
     fun navigateToRunningCreate() =
         navHostController.navigate(Screen.RUNNING_CREATE_SCREEN.route)
 
-    fun navigateToRunningInfo() =
-        navHostController.navigate(Screen.RUNNING_INFO_SCREEN.route)
+    fun navigateToRunningInfo(id: Int) =
+        navHostController.navigate(Screen.RUNNING_INFO_SCREEN.route + "/$id")
 
     fun navigateToAboutScreen() =
         navHostController.navigate(Screen.ABOUT.route)

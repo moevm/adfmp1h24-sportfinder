@@ -1,6 +1,7 @@
 package ru.moevm.sportfinder
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -36,6 +37,10 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val showToast = { text: String ->
+            Toast.makeText(this, text, Toast.LENGTH_LONG).show()
+        }
+
         setContent {
             val viewModel = hiltViewModel<MainActivityViewModel>()
             val navHostController = rememberNavController()
@@ -72,6 +77,7 @@ class MainActivity : ComponentActivity() {
                             navigationController = navigationController,
                             updateBottomBarVisible = viewModel::onBottomBarVisibleStateUpdate,
                             updateTopBarType = viewModel::onTopBarTypeUpdated,
+                            showToast = showToast
                         )
                     }
                 }

@@ -17,6 +17,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.JointType
@@ -48,11 +50,15 @@ fun RunningInfoScreen(
     state: RunningInfoState,
 ) {
     val context = LocalContext.current
-    val (title, listOfPoints, distance, listOfTags) = state
+    val (title, initialPoint, listOfPoints, distance, listOfTags) = state
 
     val cameraPosition = rememberCameraPositionState(init = {
-        position = CameraPosition.fromLatLngZoom(listOfPoints.firstOrNull() ?: Constants.SPB_CENTER_POINT, 15.0f)
+        position = CameraPosition.fromLatLngZoom(initialPoint ?: Constants.SPB_CENTER_POINT, 15.0f)
     })
+
+    LaunchedEffect(initialPoint) {
+        cameraPosition.move(CameraUpdateFactory.newLatLng(initialPoint ?: Constants.SPB_CENTER_POINT))
+    }
 
     Box {
         DefaultGoogleMap(

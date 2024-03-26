@@ -38,7 +38,7 @@ fun RunningListScreen(
     state: RunningListState,
     onTextForFilterChanged: (String) -> Unit,
     onFilterApply: () -> Unit,
-    navigateToRunningInfoScreen: (Long) -> Unit,
+    navigateToRunningInfoScreen: (Int) -> Unit,
     navigateToRunningCreateScreen: () -> Unit,
 ) {
     val (listOfRunning, textForFilter, isLoading) = state
@@ -102,7 +102,7 @@ fun RunningListScreen(
 @Composable
 private fun RunningListItem(
     runningListItem: RunningListItemVO,
-    navigateToRunningInfoScreen: (Long) -> Unit,
+    navigateToRunningInfoScreen: (Int) -> Unit,
 ) {
     val (runningId, name, tags, distance, temperature) = runningListItem
 
@@ -149,7 +149,7 @@ private fun RunningListItem(
                         modifier = courtIconsAttributesModifier
                     )
                     Text(
-                        text = distance.toString() + "Km",
+                        text = "${"%.2f".format(distance)}м",
                         modifier = courtAttributesModifier,
                         style = MaterialTheme.typography.titleMedium,
                     )
@@ -186,8 +186,8 @@ fun PreviewRunningListScreen() {
                     runningId = 0,
                     name = "Старая деревня",
                     tags = persistentListOf("Вкусно"),
-                    distance = 0.3F,
-                    temperature = 13.4F,
+                    distance = 0.3,
+                    temperature = 13,
                 ),
             ),
             textForFilter = "",
@@ -208,8 +208,8 @@ private fun PreviewRunningListItem() {
             runningId = 0,
             name = "Старая деревня",
             tags = persistentListOf("Вкусно"),
-            distance = 0.3F,
-            temperature = 13.4F,
+            distance = 0.3,
+            temperature = 13,
         ),
         {},
     )
