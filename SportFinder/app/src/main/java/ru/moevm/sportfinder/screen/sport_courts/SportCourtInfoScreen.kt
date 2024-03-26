@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Chip
+import androidx.compose.material.ChipDefaults
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -58,9 +59,10 @@ fun SportCourtInfoScreen(
         }
     }
 
-    val cameraPosition = rememberCameraPositionState().apply {
+    val cameraPosition = rememberCameraPositionState(init = {
         position = CameraPosition.fromLatLngZoom(courtInitialPoint, 15.0f)
-    }
+    })
+
     val scrollState = rememberScrollState()
     Column(
         modifier = Modifier
@@ -140,8 +142,14 @@ fun SportCourtInfoScreen(
         }
         LazyRow(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
             items(courtTags) { item ->
-                Chip(onClick = {}) {
-                    Text(item, color = SportFinderLightColorScheme.onSurface)
+                Chip(
+                    colors = ChipDefaults.chipColors(
+                        backgroundColor = SportFinderLightColorScheme.primary,
+                        leadingIconContentColor = SportFinderLightColorScheme.onPrimary
+                    ),
+                    onClick = {}
+                ) {
+                    Text(item, color = SportFinderLightColorScheme.onPrimary)
                 }
             }
         }

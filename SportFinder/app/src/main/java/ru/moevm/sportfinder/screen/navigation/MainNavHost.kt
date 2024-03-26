@@ -16,14 +16,21 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import ru.moevm.sportfinder.R
+import ru.moevm.sportfinder.screen.about.AboutScreen
 import ru.moevm.sportfinder.screen.auth.AuthorizationScreen
 import ru.moevm.sportfinder.screen.auth.AuthorizationViewModel
 import ru.moevm.sportfinder.screen.auth.RegistrationScreen
 import ru.moevm.sportfinder.screen.auth.RegistrationViewModel
 import ru.moevm.sportfinder.screen.common_components.common_top_bar.CommonTopBarType
-import ru.moevm.sportfinder.screen.common_components.common_top_bar.TopBarTypeBuilder
+import ru.moevm.sportfinder.screen.common_components.common_top_bar.CommonTopBarTypeBuilder
 import ru.moevm.sportfinder.screen.profile.ProfileScreen
 import ru.moevm.sportfinder.screen.profile.ProfileViewModel
+import ru.moevm.sportfinder.screen.running.RunningCreateScreen
+import ru.moevm.sportfinder.screen.running.RunningCreateViewModel
+import ru.moevm.sportfinder.screen.running.RunningInfoScreen
+import ru.moevm.sportfinder.screen.running.RunningInfoViewModel
+import ru.moevm.sportfinder.screen.running.RunningListScreen
+import ru.moevm.sportfinder.screen.running.RunningListViewModel
 import ru.moevm.sportfinder.screen.settings.MainSettingsScreen
 import ru.moevm.sportfinder.screen.settings.SettingsViewModel
 import ru.moevm.sportfinder.screen.settings.UpdateProfileSettingsScreen
@@ -33,6 +40,10 @@ import ru.moevm.sportfinder.screen.sport_courts.SportCourtListViewModel
 import ru.moevm.sportfinder.screen.sport_courts.SportCourtMapScreen
 import ru.moevm.sportfinder.screen.sport_courts.SportCourtMapViewModel
 import ru.moevm.sportfinder.screen.sport_courts.SportCourtsListScreen
+import ru.moevm.sportfinder.screen.training.TrainingCreateScreen
+import ru.moevm.sportfinder.screen.training.TrainingCreateViewModel
+import ru.moevm.sportfinder.screen.training.TrainingInfoScreen
+import ru.moevm.sportfinder.screen.training.TrainingInfoViewModel
 import ru.moevm.sportfinder.screen.training.TrainingListScreen
 import ru.moevm.sportfinder.screen.training.TrainingListViewModel
 
@@ -90,7 +101,7 @@ fun MainNavHost(
                 val viewModel = hiltViewModel<ProfileViewModel>()
                 val state by viewModel.state.collectAsStateWithLifecycle()
                 updateBottomBarVisible(true)
-                val topBarType = TopBarTypeBuilder()
+                val topBarType = CommonTopBarTypeBuilder()
                     .setTitle(
                         stringResource(id = R.string.app_title),
                         TextStyle(fontStyle = FontStyle.Italic, fontSize = 16.sp)
@@ -133,7 +144,7 @@ fun MainNavHost(
                 val state by viewModel.state.collectAsStateWithLifecycle()
                 updateBottomBarVisible(true)
                 updateTopBarType(false, null)
-                val navigateToSportCourtInfo = { courtId: Long ->
+                val navigateToSportCourtInfo = { courtId: Int ->
                     viewModel.onItemClicked(courtId)
                     navigationController.navigateToSportCourtInfo()
                 }
@@ -155,7 +166,7 @@ fun MainNavHost(
                 val state by viewModel.state.collectAsStateWithLifecycle()
                 val isShareUrlClicked by viewModel.isShareUrlClicked.collectAsStateWithLifecycle()
                 updateBottomBarVisible(true)
-                val topBarType = TopBarTypeBuilder()
+                val topBarType = CommonTopBarTypeBuilder()
                     .setBackButtonAsNavigationButton(navigationController::navigateBack)
                     .addMenuButton(R.drawable.ic_top_bar_share, viewModel::onShareClick)
                     .build()
@@ -184,8 +195,114 @@ fun MainNavHost(
                     state = state,
                     onTextForFilterChanged = viewModel::onTextForFilterChanged,
                     onFilterApply = viewModel::onFilterApply,
-                    navigateToAddTrainingScreen = { /*TODO*/ },
-                    navigateToTrainingInfoScreen = { /*TODO*/ }
+                    navigateToCreateTrainingScreen = navigationController::navigateToTrainingCreate,
+                    navigateToTrainingInfoScreen = { id -> navigationController.navigateToTrainingInfo() }
+                )
+            }
+
+            composable(route = Screen.TRAINING_CREATE_SCREEN.route) {
+                val viewModel = hiltViewModel<TrainingCreateViewModel>()
+                val state by viewModel.state.collectAsStateWithLifecycle()
+                updateBottomBarVisible(true)
+                val topBarType = CommonTopBarTypeBuilder()
+                    .setBackButtonAsNavigationButton(navigationController::navigateBack)
+                    .build()
+                updateTopBarType(true, topBarType)
+
+                TrainingCreateScreen(
+                    state = state,
+                    availableTags = viewModel.availableTags,
+                    onChangeNameClick = viewModel::onChangeNameClick,
+                    onChangeName = viewModel::onChangeName,
+                    onShowSelectTagsDialogClick = viewModel::onShowSelectTagsDialogClick,
+                    onSaveSelectedTagsClick = viewModel::onSaveSelectedTagsClick,
+                    onDismissSelectTagsDialogClick = viewModel::onDismissSelectTagsDialogClick,
+                    onRemoveTagClick = viewModel::onRemoveTagClick,
+                    onChangeDescriptionClick = viewModel::onChangeDescriptionClick,
+                    onChangeDescription = viewModel::onChangeDescription,
+                    onSaveClick = {
+                        viewModel.onSaveClick()
+                        navigationController.navigateToTraining()
+                    }
+                )
+            }
+
+            composable(route = Screen.TRAINING_INFO_SCREEN.route) {
+                val viewModel = hiltViewModel<TrainingInfoViewModel>()
+                val state by viewModel.state.collectAsStateWithLifecycle()
+                updateBottomBarVisible(true)
+                val context = LocalContext.current
+                val topBarType = CommonTopBarTypeBuilder()
+                    .setBackButtonAsNavigationButton(navigationController::navigateBack)
+                    .addMenuButton(R.drawable.ic_top_bar_share) {
+                        Toast.makeText(context, "https://sportfinder.com", Toast.LENGTH_LONG).show()
+                    }
+                    .build()
+                updateTopBarType(true, topBarType)
+
+                TrainingInfoScreen(
+                    state = state,
+                )
+            }
+        }
+
+        navigation(
+            startDestination = Screen.RUNNING_LIST_SCREEN.route,
+            route = ScreensSubgraphs.RUNNING.route
+        ) {
+            composable(route = Screen.RUNNING_LIST_SCREEN.route) {
+                val viewModel = hiltViewModel<RunningListViewModel>()
+                val state by viewModel.state.collectAsStateWithLifecycle()
+                updateBottomBarVisible(true)
+                updateTopBarType(false, null)
+
+                RunningListScreen(
+                    state = state,
+                    onTextForFilterChanged = viewModel::onTextForFilterChanged,
+                    onFilterApply = viewModel::onFilterApply,
+                    navigateToRunningInfoScreen = { navigationController.navigateToRunningInfo() },
+                    navigateToRunningCreateScreen = navigationController::navigateToRunningCreate
+                )
+            }
+
+            composable(route = Screen.RUNNING_CREATE_SCREEN.route) {
+                val viewModel = hiltViewModel<RunningCreateViewModel>()
+                val state by viewModel.state.collectAsStateWithLifecycle()
+                updateBottomBarVisible(true)
+                val topBarType = CommonTopBarTypeBuilder()
+                    .setBackButtonAsNavigationButton(navigationController::navigateBack)
+                    .build()
+                updateTopBarType(true, topBarType)
+
+                RunningCreateScreen(
+                    state = state,
+                    startPoint = viewModel.startPoint,
+                    onTitleChanged = viewModel::onTitleChanged,
+                    addPoint = viewModel::addPoint,
+                    removePoint = viewModel::removePoint,
+                    onShowSelectTagsDialogClick = viewModel::onShowSelectTagsDialogClick,
+                    onSaveTagsDialogClick = viewModel::onSaveTagsDialogClick,
+                    onDismissTagsDialogClick = viewModel::onDismissTagsDialogClick,
+                    onRemoveTagClick = viewModel::onRemoveTagClick,
+                    onSaveClick = { /*TODO*/ },
+                )
+            }
+
+            composable(route = Screen.RUNNING_INFO_SCREEN.route) {
+                val viewModel = hiltViewModel<RunningInfoViewModel>()
+                val state by viewModel.state.collectAsStateWithLifecycle()
+                updateBottomBarVisible(true)
+                val context = LocalContext.current
+                val topBarType = CommonTopBarTypeBuilder()
+                    .setBackButtonAsNavigationButton(navigationController::navigateBack)
+                    .addMenuButton(R.drawable.ic_top_bar_share) {
+                        Toast.makeText(context, "https://sportfinder.com", Toast.LENGTH_LONG).show()
+                    }
+                    .build()
+                updateTopBarType(true, topBarType)
+
+                RunningInfoScreen(
+                    state = state
                 )
             }
         }
@@ -197,7 +314,7 @@ fun MainNavHost(
             composable(route = Screen.SETTINGS_MAIN_SCREEN.route) {
                 val viewModel = hiltViewModel<SettingsViewModel>()
                 updateBottomBarVisible(false)
-                val topBarType = TopBarTypeBuilder()
+                val topBarType = CommonTopBarTypeBuilder()
                     .setBackButtonAsNavigationButton(navigationController::navigateBack)
                     .build()
                 updateTopBarType(true, topBarType)
@@ -215,14 +332,15 @@ fun MainNavHost(
                             navigationController.navigateToAuthScreen()
                         }
                     },
-                    navigateToUpdateProfile = navigationController::navigateToSettingsUpdateProfile
+                    navigateToUpdateProfile = navigationController::navigateToSettingsUpdateProfile,
+                    navigateToAboutScreen = navigationController::navigateToAboutScreen
                 )
             }
             composable(route = Screen.SETTINGS_UPDATE_PROFILE_SCREEN.route) {
                 val viewModel = hiltViewModel<SettingsViewModel>()
                 val state by viewModel.updateProfileState.collectAsStateWithLifecycle()
                 updateBottomBarVisible(false)
-                val topBarType = TopBarTypeBuilder()
+                val topBarType = CommonTopBarTypeBuilder()
                     .setBackButtonAsNavigationButton(navigationController::navigateBack)
                     .build()
                 updateTopBarType(true, topBarType)
@@ -243,6 +361,15 @@ fun MainNavHost(
                     }
                 )
             }
+        }
+
+        composable(route = Screen.ABOUT.route) {
+            updateBottomBarVisible(true)
+            val topBarType = CommonTopBarTypeBuilder()
+                .setBackButtonAsNavigationButton(navigationController::navigateBack)
+                .build()
+            updateTopBarType(true, topBarType)
+            AboutScreen()
         }
     }
 }

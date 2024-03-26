@@ -8,8 +8,14 @@ enum class Screen(val route: String) {
     SPORT_COURT_LIST_SCREEN("sport_court_list_screen"),
     SPORT_COURT_INFO_SCREEN("sport_court_info_screen"),
     TRAINING_LIST_SCREEN("training_list_screen"),
+    TRAINING_CREATE_SCREEN("training_create_screen"),
+    TRAINING_INFO_SCREEN("training_info_screen"),
+    RUNNING_LIST_SCREEN("running_list_screen"),
+    RUNNING_CREATE_SCREEN("running_create_screen"),
+    RUNNING_INFO_SCREEN("running_info_screen"),
     SETTINGS_MAIN_SCREEN("settings_main_screen"),
-    SETTINGS_UPDATE_PROFILE_SCREEN("settings_update_profile_screen")
+    SETTINGS_UPDATE_PROFILE_SCREEN("settings_update_profile_screen"),
+    ABOUT("about_screen")
 }
 
 enum class ScreensSubgraphs(val route: String) {
@@ -17,5 +23,6 @@ enum class ScreensSubgraphs(val route: String) {
     PROFILE("profile"),
     SPORT_COURT("sport_court"),
     TRAINING("training"),
+    RUNNING("running"),
     SETTINGS("settings")
 }

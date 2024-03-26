@@ -1,4 +1,4 @@
-package ru.moevm.sportfinder.screen.training
+package ru.moevm.sportfinder.screen.running
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
@@ -34,14 +34,14 @@ import ru.moevm.sportfinder.screen.common_components.shimmerEffect
 import ru.moevm.sportfinder.ui.theme.SportFinderLightColorScheme
 
 @Composable
-fun TrainingListScreen(
-    state: TrainingListState,
+fun RunningListScreen(
+    state: RunningListState,
     onTextForFilterChanged: (String) -> Unit,
     onFilterApply: () -> Unit,
-    navigateToCreateTrainingScreen: () -> Unit,
-    navigateToTrainingInfoScreen: (Long) -> Unit,
+    navigateToRunningInfoScreen: (Long) -> Unit,
+    navigateToRunningCreateScreen: () -> Unit,
 ) {
-    val (listOfTraining, textForFilter, isLoading) = state
+    val (listOfRunning, textForFilter, isLoading) = state
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -66,10 +66,10 @@ fun TrainingListScreen(
                         )
                     }
                 } else {
-                    items(listOfTraining) { trainingListItem ->
-                        TrainingListItem(
-                            trainingListItem = trainingListItem,
-                            navigateToTrainingInfoScreen = navigateToTrainingInfoScreen
+                    items(listOfRunning) { runningListItem ->
+                        RunningListItem(
+                            runningListItem = runningListItem,
+                            navigateToRunningInfoScreen = navigateToRunningInfoScreen
                         )
                     }
                 }
@@ -85,7 +85,7 @@ fun TrainingListScreen(
                 contentColor = SportFinderLightColorScheme.onPrimary
             ),
             shape = CircleShape,
-            onClick = navigateToCreateTrainingScreen
+            onClick = navigateToRunningCreateScreen
         ) {
             Row {
                 Icon(
@@ -95,21 +95,22 @@ fun TrainingListScreen(
                 )
             }
         }
+
     }
 }
 
 @Composable
-private fun TrainingListItem(
-    trainingListItem: TrainingListItemVO,
-    navigateToTrainingInfoScreen: (Long) -> Unit,
+private fun RunningListItem(
+    runningListItem: RunningListItemVO,
+    navigateToRunningInfoScreen: (Long) -> Unit,
 ) {
-    val (runningId, name, tags, temperature) = trainingListItem
+    val (runningId, name, tags, distance, temperature) = runningListItem
 
     Box(
         modifier = Modifier
             .border(BorderStroke(2.dp, SportFinderLightColorScheme.primary), RoundedCornerShape(5))
             .fillMaxWidth()
-            .clickable { navigateToTrainingInfoScreen(runningId) }
+            .clickable { navigateToRunningInfoScreen(runningId) }
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 8.dp)
@@ -133,12 +134,26 @@ private fun TrainingListItem(
                     )
 
                 }
+
             }
             Row(
                 modifier = Modifier.padding(vertical = 4.dp)
             ) {
                 val courtAttributesModifier = Modifier.padding(end = 8.dp)
                 val courtIconsAttributesModifier = Modifier.padding(end = 8.dp)
+                distance?.let {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_sport_court_screen_distance),
+                        contentDescription = "Map sign",
+                        tint = SportFinderLightColorScheme.primary,
+                        modifier = courtIconsAttributesModifier
+                    )
+                    Text(
+                        text = distance.toString() + "Km",
+                        modifier = courtAttributesModifier,
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                }
 
                 temperature?.let {
                     Icon(
@@ -163,14 +178,15 @@ private fun TrainingListItem(
 
 @Preview
 @Composable
-private fun TrainingListScreenPreview() {
-    TrainingListScreen(
-        state = TrainingListState(
-            listOfTraining = persistentListOf(
-                TrainingListItemVO(
-                    trainingId = 0,
+fun PreviewRunningListScreen() {
+    RunningListScreen(
+        state = RunningListState(
+            listOfRunning = persistentListOf(
+                RunningListItemVO(
+                    runningId = 0,
                     name = "Старая деревня",
                     tags = persistentListOf("Вкусно"),
+                    distance = 0.3F,
                     temperature = 13.4F,
                 ),
             ),
@@ -179,19 +195,20 @@ private fun TrainingListScreenPreview() {
         ),
         onTextForFilterChanged = {},
         onFilterApply = {},
-        navigateToCreateTrainingScreen = {},
-        navigateToTrainingInfoScreen = {}
+        navigateToRunningInfoScreen = {},
+        navigateToRunningCreateScreen = {}
     )
 }
 
 @Composable
 @Preview
-private fun TrainingListItemPreview() {
-    TrainingListItem(
-        TrainingListItemVO(
-            trainingId = 0,
+private fun PreviewRunningListItem() {
+    RunningListItem(
+        RunningListItemVO(
+            runningId = 0,
             name = "Старая деревня",
             tags = persistentListOf("Вкусно"),
+            distance = 0.3F,
             temperature = 13.4F,
         ),
         {},

@@ -45,9 +45,9 @@ fun SportCourtMapScreen(
     navigateToSportCourtInfoScreen: (Int) -> Unit
 ) {
     val context = LocalContext.current
-    val cameraPosition = rememberCameraPositionState().apply {
+    val cameraPosition = rememberCameraPositionState(init = {
         position = CameraPosition.fromLatLngZoom(startPoint, 15.0f)
-    }
+    })
     val (sportCourts, textForFilter) = state
 
     Box(
