@@ -37,6 +37,7 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.Polyline
 import com.google.maps.android.compose.rememberCameraPositionState
 import ru.moevm.sportfinder.R
+import ru.moevm.sportfinder.common.Constants
 import ru.moevm.sportfinder.screen.common_components.DefaultGoogleMap
 import ru.moevm.sportfinder.ui.theme.SportFinderLightColorScheme
 
@@ -50,7 +51,7 @@ fun RunningInfoScreen(
     val (title, listOfPoints, distance, listOfTags) = state
 
     val cameraPosition = rememberCameraPositionState(init = {
-        position = CameraPosition.fromLatLngZoom(listOfPoints.first(), 15.0f)
+        position = CameraPosition.fromLatLngZoom(listOfPoints.firstOrNull() ?: Constants.SPB_CENTER_POINT, 15.0f)
     })
 
     Box {

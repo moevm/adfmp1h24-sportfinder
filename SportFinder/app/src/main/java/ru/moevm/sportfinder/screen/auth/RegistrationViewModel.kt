@@ -3,7 +3,6 @@ package ru.moevm.sportfinder.screen.auth
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
@@ -11,7 +10,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.moevm.sportfinder.domain.use_case.CreateProfileUseCase
 import ru.moevm.sportfinder.domain.use_case.SetAutoSignInUseCase
-import ru.moevm.sportfinder.domain.use_case.SetProfileDataUseCase
 import javax.inject.Inject
 
 @HiltViewModel
