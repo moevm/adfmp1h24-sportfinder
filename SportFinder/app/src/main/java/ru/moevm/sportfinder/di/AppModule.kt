@@ -3,7 +3,6 @@ package ru.moevm.sportfinder.di
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -15,6 +14,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.moevm.sportfinder.common.Constants.SPORT_COURTS_API_URL
 import ru.moevm.sportfinder.common.userProfileDataStore
+import ru.moevm.sportfinder.data.db.ProfileDao
+import ru.moevm.sportfinder.data.db.ProfileDaoImpl
 import ru.moevm.sportfinder.data.remote.ServerApi
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -28,6 +29,13 @@ object AppModule {
     fun providePreferencesUserProfileDataStore(
         @ApplicationContext context: Context
     ): DataStore<Preferences> = context.userProfileDataStore
+
+    @Provides
+    @Singleton
+    fun provideProfileDao(
+        datastore: DataStore<Preferences>
+    ): ProfileDao = ProfileDaoImpl(datastore)
+
     @Provides
     @Singleton
     fun provideOkHttpClient() = OkHttpClient().newBuilder()

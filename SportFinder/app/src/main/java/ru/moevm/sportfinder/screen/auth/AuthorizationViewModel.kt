@@ -2,17 +2,36 @@ package ru.moevm.sportfinder.screen.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import ru.moevm.sportfinder.domain.use_case.IsAutoSignInEnabledUseCase
+import ru.moevm.sportfinder.domain.use_case.IsProfileExistsFromLoginScreenUseCase
+import ru.moevm.sportfinder.domain.use_case.SetAutoSignInUseCase
 import javax.inject.Inject
 
-class AuthorizationViewModel @Inject constructor() : ViewModel() {
+@HiltViewModel
+class AuthorizationViewModel @Inject constructor(
+    private val isAutoSignInEnabledUseCase: IsAutoSignInEnabledUseCase,
+    private val isProfileExistsFromLoginScreenUseCase: IsProfileExistsFromLoginScreenUseCase,
+    private val setAutoSignInUseCase: SetAutoSignInUseCase
+) : ViewModel() {
     private val _state = MutableStateFlow(AuthorizationState())
     val state = _state.asStateFlow()
+
+    fun trySignInFromStart() {
+        isAutoSignInEnabledUseCase()
+            .onEach { isAuthorized ->
+                _state.value = _state.value.copy(
+                    isLoading = false,
+                    isAuthorized = isAuthorized,
+                )
+            }
+            .launchIn(viewModelScope)
+    }
 
     fun updateLogin(newLogin: String) {
         _state.value = _state.value.copy(login = newLogin)
@@ -23,10 +42,20 @@ class AuthorizationViewModel @Inject constructor() : ViewModel() {
     }
 
     fun trySignIn() {
-        flow { // TODO: Заменить на попытку авторизации пользователя
-            _state.value = _state.value.copy(isLoading = true)
-            delay(3_000)
-            emit(true)
+        _state.value = _state.value.copy(isLoading = true)
+
+        flow {
+            var isAuthorized = false
+            isProfileExistsFromLoginScreenUseCase(_state.value.login, _state.value.password)
+                .onEach {
+                    isAuthorized = it
+                }
+                .launchIn(viewModelScope)
+                .join()
+            setAutoSignInUseCase(isAuthorized)
+                .launchIn(viewModelScope)
+                .join()
+            emit(isAuthorized)
         }
             .onEach { isAuthorized ->
                 _state.value = _state.value.copy(

@@ -22,15 +22,13 @@ class RunningCreateViewModel @Inject constructor() : ViewModel() {
 
     val startPoint = Constants.SPB_CENTER_POINT
 
-    init {
-        getTags()
+    fun getTags() {
+        flow {
+            emit(persistentListOf("Деревья", "Бездорожье", "Асфальт"))
+        }
             .onEach { result ->
                 _state.value = _state.value.copy(availableTags = result)
-        }.launchIn(viewModelScope)
-    }
-
-    private fun getTags() = flow {
-        emit(persistentListOf("Деревья", "Бездорожье", "Асфальт"))
+            }.launchIn(viewModelScope)
     }
 
     fun onTitleChanged(newTitle: String) {

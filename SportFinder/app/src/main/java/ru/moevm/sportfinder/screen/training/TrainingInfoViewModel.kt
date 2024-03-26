@@ -19,11 +19,7 @@ class TrainingInfoViewModel @Inject constructor() : ViewModel() {
     private val _state = MutableStateFlow(TrainingInfoState())
     val state = _state.asStateFlow()
 
-    init {
-        updateTrainingInfoState()
-    }
-
-    private fun updateTrainingInfoState() {
+    fun updateTrainingInfoState() {
         flow {
             val fakeData = getFakeData()
             emit(fakeData)
