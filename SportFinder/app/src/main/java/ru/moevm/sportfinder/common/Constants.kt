@@ -8,4 +8,5 @@ object Constants {
 
     const val SPORT_COURTS_API_URL = "https://yazzh.gate.petersburg.ru/"
 
+    const val SPORT_FINDER_DATABASE_NAME = "sport_finder_database.db"
 }

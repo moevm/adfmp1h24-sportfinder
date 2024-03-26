@@ -3,6 +3,7 @@ package ru.moevm.sportfinder.di
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.room.Room
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -12,10 +13,13 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import ru.moevm.sportfinder.common.Constants
 import ru.moevm.sportfinder.common.Constants.SPORT_COURTS_API_URL
 import ru.moevm.sportfinder.common.userProfileDataStore
 import ru.moevm.sportfinder.data.db.ProfileDao
 import ru.moevm.sportfinder.data.db.ProfileDaoImpl
+import ru.moevm.sportfinder.data.db.room.RunningDao
+import ru.moevm.sportfinder.data.db.room.SportFinderDatabase
 import ru.moevm.sportfinder.data.remote.ServerApi
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -56,4 +60,20 @@ object AppModule {
         .baseUrl(SPORT_COURTS_API_URL)
         .build()
         .create(ServerApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideSportFinderDatabase(@ApplicationContext appContext: Context): SportFinderDatabase {
+        return Room.databaseBuilder(
+            appContext,
+            SportFinderDatabase::class.java,
+            Constants.SPORT_FINDER_DATABASE_NAME
+        ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideRunningDao(database: SportFinderDatabase): RunningDao {
+        return database.runningDao()
+    }
 }
