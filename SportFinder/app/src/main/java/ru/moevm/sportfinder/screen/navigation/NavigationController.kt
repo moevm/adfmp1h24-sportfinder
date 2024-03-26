@@ -34,8 +34,8 @@ class NavigationController(
     fun navigateToSportCourtList() =
         navHostController.navigate(Screen.SPORT_COURT_LIST_SCREEN.route)
 
-    fun navigateToSportCourtInfo() =
-        navHostController.navigate(Screen.SPORT_COURT_INFO_SCREEN.route)
+    fun navigateToSportCourtInfo(id: Int) =
+        navHostController.navigate(Screen.SPORT_COURT_INFO_SCREEN.route + "/$id")
 
     fun navigateToSettings() =
         navHostController.navigate(ScreensSubgraphs.SETTINGS.route)
