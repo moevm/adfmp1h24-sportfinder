@@ -1,9 +1,8 @@
 package ru.moevm.sportfinder.screen.sport_courts
 
+import android.view.MotionEvent
 import android.widget.Toast
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,6 +15,8 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Chip
 import androidx.compose.material.ChipDefaults
 import androidx.compose.material.ExperimentalMaterialApi
@@ -25,8 +26,14 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -34,14 +41,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import ru.moevm.sportfinder.R
+import ru.moevm.sportfinder.common.Constants
 import ru.moevm.sportfinder.screen.common_components.DefaultGoogleMap
 import ru.moevm.sportfinder.ui.theme.SportFinderLightColorScheme
 import java.text.DecimalFormat
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun SportCourtInfoScreen(
     state: SportCourtInfoState,
@@ -51,6 +65,10 @@ fun SportCourtInfoScreen(
 ) {
     val (courtName, courtAddress, courtInitialPoint, courtDistance, courtWeatherTemperature, courtAmountFavorites, isFavorite, courtTags, courtInfo, courtLinkUrl) = state
     val context = LocalContext.current
+    val cameraPosition = rememberCameraPositionState(init = {
+        position = CameraPosition.fromLatLngZoom(courtInitialPoint ?: Constants.SPB_CENTER_POINT, 15.0f)
+    })
+    var columnScrollingEnabled by remember { mutableStateOf(true) }
 
     LaunchedEffect(isShareUrlClicked) {
         if (isShareUrlClicked) {
@@ -59,25 +77,57 @@ fun SportCourtInfoScreen(
         }
     }
 
-    val cameraPosition = rememberCameraPositionState(init = {
-        position = CameraPosition.fromLatLngZoom(courtInitialPoint, 15.0f)
-    })
+    LaunchedEffect(courtInitialPoint) {
+        cameraPosition.move(CameraUpdateFactory.newLatLng(courtInitialPoint ?: Constants.SPB_CENTER_POINT))
+    }
 
-    val scrollState = rememberScrollState()
+    LaunchedEffect(cameraPosition.isMoving) {
+        if (!cameraPosition.isMoving) {
+            columnScrollingEnabled = true
+        }
+    }
+
     Column(
         modifier = Modifier
-            .padding(12.dp)
-            .scrollable(scrollState, Orientation.Vertical),
+            .padding(horizontal = 12.dp)
+            .verticalScroll(rememberScrollState(), enabled = columnScrollingEnabled),
     ) {
+        Spacer(modifier = Modifier.height(12.dp))
         Surface(
             shape = RoundedCornerShape(8.dp)
         ) {
             DefaultGoogleMap(
                 modifier = Modifier
                     .height((LocalConfiguration.current.screenHeightDp / 2).dp)
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .pointerInteropFilter { event ->
+                        when (event.action) {
+                            MotionEvent.ACTION_DOWN -> {
+                                columnScrollingEnabled = false
+                                false
+                            }
+
+                            else -> {
+                                true
+                            }
+                        }
+                    }
+                ,
                 cameraPositionState = cameraPosition
             ) {
+                if (courtInitialPoint != null) {
+                    Marker(
+                        state = MarkerState(courtInitialPoint),
+                        title = courtName,
+                        icon = BitmapDescriptorFactory
+                            .fromBitmap(
+                                ContextCompat.getDrawable(
+                                    context,
+                                    R.drawable.ic_sport_court_screen_map_marker
+                                )!!.toBitmap()
+                            )
+                    )
+                }
 
             }
         }
@@ -86,17 +136,27 @@ fun SportCourtInfoScreen(
             shape = RoundedCornerShape(8.dp),
             color = SportFinderLightColorScheme.primary,
         ) {
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp)) {
-                Text(
-                    text = courtName.uppercase(),
-                    style = TextStyle(color = SportFinderLightColorScheme.onPrimary, fontSize = 16.sp)
-                )
-                Text(
-                    text = courtAddress.uppercase(),
-                    style = TextStyle(color = SportFinderLightColorScheme.onPrimary, fontSize = 12.sp)
-                )
+            SelectionContainer {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 12.dp)
+                ) {
+                    Text(
+                        text = courtName.uppercase(),
+                        style = TextStyle(
+                            color = SportFinderLightColorScheme.onPrimary,
+                            fontSize = 16.sp
+                        )
+                    )
+                    Text(
+                        text = courtAddress.uppercase(),
+                        style = TextStyle(
+                            color = SportFinderLightColorScheme.onPrimary,
+                            fontSize = 12.sp
+                        )
+                    )
+                }
             }
         }
         Surface(
@@ -164,10 +224,13 @@ fun SportCourtInfoScreen(
                 style = TextStyle(fontSize = 20.sp)
             )
         }
-        Text(
-            text = courtInfo,
-            style = TextStyle(fontSize = 14.sp)
-        )
+        SelectionContainer {
+            Text(
+                text = courtInfo,
+                style = TextStyle(fontSize = 14.sp)
+            )
+        }
+        Spacer(modifier = Modifier.height(12.dp))
     }
 }
 

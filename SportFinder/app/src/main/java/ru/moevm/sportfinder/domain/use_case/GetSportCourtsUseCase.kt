@@ -14,14 +14,14 @@ class GetSportCourtsUseCase @Inject constructor(
     operator fun invoke(): Flow<List<SportCourtVO>> = flow {
         val result = sportCourtsRepository.getSportCourtsList("Все", 1, 100)
         val resultAsVO = result.courtsData
-            .filter { it.place.coordinates.size == 2 }
+            .filter { it.place?.coordinates?.size == 2 && it.place.id != null && it.place.name != null }
             .map { sportCourtDataDTO ->
                 val sportCourt = sportCourtDataDTO.place
                 SportCourtVO(
-                    id = sportCourt.id,
-                    name = sportCourt.name,
-                    coordinates = LatLng(sportCourt.coordinates[0], sportCourt.coordinates[1]),
-                    tags = sportCourt.categories.split(", ")
+                    id = requireNotNull(sportCourt?.id),
+                    name = requireNotNull(sportCourt?.name),
+                    coordinates = LatLng(requireNotNull(sportCourt?.coordinates)[0], requireNotNull(sportCourt?.coordinates)[1]),
+                    tags = sportCourt?.categories?.split(", ") ?: emptyList()
                 )
             }
 

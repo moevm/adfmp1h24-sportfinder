@@ -5,16 +5,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.moevm.sportfinder.common.Constants
+import ru.moevm.sportfinder.domain.use_case.GetSportCourtByIdUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class SportCourtInfoViewModel @Inject constructor(
+    private val getSportCourtByIdUseCase: GetSportCourtByIdUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -45,25 +50,40 @@ class SportCourtInfoViewModel @Inject constructor(
     }
 
     private fun loadSportCourtInfo() {
-        flow {
-            emit(
-                SportCourtInfoState(
-                    courtName = "SPOT NAME PLACEHOLDER",
-                    courtAddress = "ул. Школьная",
-                    courtInitialPoint = Constants.SPB_CENTER_POINT,
-                    courtDistance = 1.2,
-                    courtWeatherTemperature = 6,
-                    courtAmountFavorites = 5,
-                    isFavorite = false,
-                    courtTags = persistentListOf("Workout", "Бег"),
-                    courtInfo = "Placeholder for this spot. Mb the best spot from all over the world! Idk really.",
-                    courtLinkUrl = "https://sportfinder.com",
-                )
-            )
+        sportCourtId?.let {
+            getSportCourtByIdUseCase(sportCourtId)
+                .flowOn(Dispatchers.IO)
+                .onEach { newState ->
+                    val sportCourtInfoState = if (newState == null) {
+                        SportCourtInfoState(
+                            courtName = "Ошибка",
+                            courtAddress = "",
+                            courtInitialPoint = null,
+                            courtDistance = 0.0,
+                            courtWeatherTemperature = 0,
+                            courtAmountFavorites = 0,
+                            isFavorite = false,
+                            courtTags = persistentListOf(),
+                            courtInfo = "Ошибка получения данных",
+                            courtLinkUrl = ""
+                        )
+                    } else {
+                        SportCourtInfoState(
+                            courtName = newState.name,
+                            courtAddress = newState.address,
+                            courtInitialPoint = newState.coordinates,
+                            courtDistance = 0.0,
+                            courtWeatherTemperature = 0,
+                            courtAmountFavorites = 0,
+                            isFavorite = false,
+                            courtTags = newState.tags.toPersistentList(),
+                            courtInfo = newState.info,
+                            courtLinkUrl = ""
+                        )
+                    }
+                    _state.value = sportCourtInfoState
+                }
+                .launchIn(viewModelScope)
         }
-            .onEach { newState ->
-                _state.value = newState
-            }
-            .launchIn(viewModelScope)
     }
 }
