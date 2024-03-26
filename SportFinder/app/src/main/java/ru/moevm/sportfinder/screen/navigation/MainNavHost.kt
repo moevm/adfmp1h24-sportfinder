@@ -10,8 +10,10 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import ru.moevm.sportfinder.R
 import ru.moevm.sportfinder.screen.about.AboutScreen
@@ -133,7 +135,8 @@ fun MainNavHost(
                     state = state,
                     onTextForFilterChanged = viewModel::onTextForFilterChanged,
                     onFilterApply = viewModel::onFilterApply,
-                    navigateToSportCourtListScreen = navigationController::navigateToSportCourtList
+                    navigateToSportCourtListScreen = navigationController::navigateToSportCourtList,
+                    navigateToSportCourtInfoScreen = { courtId -> navigationController.navigateToSportCourtInfo(courtId) }
                 )
             }
             composable(route = Screen.SPORT_COURT_LIST_SCREEN.route) {
@@ -151,10 +154,14 @@ fun MainNavHost(
                     onTextForFilterChanged = viewModel::onTextForFilterChanged,
                     onFilterApply = viewModel::onFilterApply,
                     navigateToSportCourtMapScreen = navigationController::navigateToSportCourtMap,
-                    navigateToSportCourtInfoScreen = navigateToSportCourtInfo
+                    navigateToSportCourtInfoScreen = { courtId -> navigationController.navigateToSportCourtInfo(courtId) }
                 )
             }
-            composable(route = Screen.SPORT_COURT_INFO_SCREEN.route) {
+            composable(route = Screen.SPORT_COURT_INFO_SCREEN.route + "/{sportCourtId}",
+                arguments = listOf(navArgument("sportCourtId") {
+                    type = NavType.IntType
+                })
+            ) {
                 val viewModel = hiltViewModel<SportCourtInfoViewModel>()
                 val state by viewModel.state.collectAsStateWithLifecycle()
                 val isShareUrlClicked by viewModel.isShareUrlClicked.collectAsStateWithLifecycle()
