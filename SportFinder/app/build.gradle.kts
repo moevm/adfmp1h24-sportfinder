@@ -65,7 +65,7 @@ dependencies {
     implementation(libs.androidx.lifecycleRuntime)
     implementation(libs.androidx.lifecycleRuntimeCompose)
     implementation(libs.kotlin.immutableCollections)
-
+    implementation(libs.navigation.compose)
 
     // Google Maps Location Services
     implementation(libs.googlemaps.compose)
