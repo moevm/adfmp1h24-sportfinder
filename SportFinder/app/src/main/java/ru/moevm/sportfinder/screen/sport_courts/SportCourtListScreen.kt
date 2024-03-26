@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,7 +42,7 @@ fun SportCourtsListScreen(
     onTextForFilterChanged: (String) -> Unit,
     onFilterApply: () -> Unit,
     navigateToSportCourtMapScreen: () -> Unit,
-    navigateToSportCourtInfoScreen: (Long) -> Unit,
+    navigateToSportCourtInfoScreen: (Int) -> Unit,
 ) {
     val (listOfSportCourt, textForFilter, isLoading) = state
 
@@ -55,21 +56,21 @@ fun SportCourtsListScreen(
             LazyColumn(
                 modifier = Modifier.fillMaxWidth(),
                 contentPadding = PaddingValues(8.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 if (isLoading) {
-                    items(3) {
+                    items(8) {
                         Box(
                             modifier = Modifier
                                 .height(100.dp)
                                 .fillMaxWidth()
-                                .padding(10.dp)
+                                .clip(RoundedCornerShape(5))
                                 .shimmerEffect()
                         )
                     }
                 } else {
                     items(listOfSportCourt) { sportCourtListItem ->
-                        SportCourtListItem(
+                        SportCourtListItemContent(
                             sportCourtListItem = sportCourtListItem,
                             navigateToSportCourtInfoScreen = navigateToSportCourtInfoScreen
                         )
@@ -107,9 +108,9 @@ fun SportCourtsListScreen(
 }
 
 @Composable
-private fun SportCourtListItem(
-    sportCourtListItem: SportCourtListItemVO,
-    navigateToSportCourtInfoScreen: (Long) -> Unit,
+private fun SportCourtListItemContent(
+    sportCourtListItem: SportCourtListItem,
+    navigateToSportCourtInfoScreen: (Int) -> Unit,
 ) {
     val (courtId, name, tags, temperature) = sportCourtListItem
 
@@ -176,7 +177,7 @@ fun SportsCourtListScreenPreview() {
     SportCourtsListScreen(
         state = SportCourtListState(
             listOfSportCourt = persistentListOf(
-                SportCourtListItemVO(
+                SportCourtListItem(
                     courtId = 0,
                     name = "Старая деревня",
                     tags = persistentListOf("Вкусно"),
@@ -196,8 +197,8 @@ fun SportsCourtListScreenPreview() {
 @Composable
 @Preview
 private fun SportCourtListItemPreview() {
-    SportCourtListItem(
-        SportCourtListItemVO(
+    SportCourtListItemContent(
+        SportCourtListItem(
             courtId = 0,
             name = "Старая деревня",
             tags = persistentListOf("Вкусно"),

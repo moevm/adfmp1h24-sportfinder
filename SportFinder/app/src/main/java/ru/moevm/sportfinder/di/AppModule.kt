@@ -13,7 +13,9 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import ru.moevm.sportfinder.common.Constants.SPORT_COURTS_API_URL
 import ru.moevm.sportfinder.common.userProfileDataStore
+import ru.moevm.sportfinder.data.remote.ServerApi
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -39,4 +41,11 @@ object AppModule {
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .addConverterFactory(GsonConverterFactory.create())
         .client(okHttpClient)
+
+    @Provides
+    @Singleton
+    fun provideServerApi(retrofitBuilder: Retrofit.Builder): ServerApi = retrofitBuilder
+        .baseUrl(SPORT_COURTS_API_URL)
+        .build()
+        .create(ServerApi::class.java)
 }
