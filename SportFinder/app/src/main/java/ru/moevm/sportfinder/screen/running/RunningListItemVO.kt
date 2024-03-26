@@ -4,9 +4,9 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 data class RunningListItemVO(
-    val runningId: Long,
+    val runningId: Int,
     val name: String,
     val tags: ImmutableList<String> = persistentListOf(),
-    val distance: Float? = null,
-    val temperature: Float? = null,
+    val distance: Double? = null,
+    val temperature: Int? = null,
 )

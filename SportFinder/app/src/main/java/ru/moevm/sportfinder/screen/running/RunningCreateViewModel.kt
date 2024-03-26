@@ -12,10 +12,13 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.moevm.sportfinder.common.Constants
 import ru.moevm.sportfinder.common.MapTools
+import ru.moevm.sportfinder.domain.use_case.UseRunningDatabaseUseCase
 import javax.inject.Inject
 
 @HiltViewModel
-class RunningCreateViewModel @Inject constructor() : ViewModel() {
+class RunningCreateViewModel @Inject constructor(
+    private val useRunningDatabaseUseCase: UseRunningDatabaseUseCase,
+) : ViewModel() {
 
     private val _state = MutableStateFlow(RunningCreateState())
     val state = _state.asStateFlow()
@@ -24,7 +27,7 @@ class RunningCreateViewModel @Inject constructor() : ViewModel() {
 
     fun getTags() {
         flow {
-            emit(persistentListOf("Деревья", "Бездорожье", "Асфальт"))
+            emit(persistentListOf("Деревья", "Бездорожье", "Асфальт", "Достопримечательности", "Чистый воздух"))
         }
             .onEach { result ->
                 _state.value = _state.value.copy(availableTags = result)
@@ -55,6 +58,20 @@ class RunningCreateViewModel @Inject constructor() : ViewModel() {
 
     fun onDismissTagsDialogClick() {
         _state.value = _state.value.copy(isSelectTagDialogShown = false)
+    }
+
+    fun onSaveClick(onSuccess: () -> Unit) {
+        useRunningDatabaseUseCase.addRunning(
+            _state.value.title,
+            _state.value.listOfTags,
+            _state.value.listOfPoints
+        )
+            .onEach { isAdded ->
+                if (isAdded) {
+                    onSuccess()
+                }
+            }
+            .launchIn(viewModelScope)
     }
 
     fun addPoint(point: LatLng) {

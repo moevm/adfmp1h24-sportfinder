@@ -33,10 +33,6 @@ class SportCourtListViewModel @Inject constructor(
         updateListOfSportCourt(_state.value.textForFilter.lowercase())
     }
 
-    fun onItemClicked(courtId: Int) {
-
-    }
-
     private fun updateListOfSportCourt(filter: String = "") {
         _state.value = _state.value.copy(isLoading = true)
 

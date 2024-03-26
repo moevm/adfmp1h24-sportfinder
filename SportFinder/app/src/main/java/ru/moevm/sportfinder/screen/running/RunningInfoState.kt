@@ -6,6 +6,7 @@ import kotlinx.collections.immutable.persistentListOf
 
 data class RunningInfoState(
     val title: String = "",
+    val initialPoint: LatLng? = null,
     val listOfPoints: ImmutableList<LatLng> = persistentListOf(),
     val distance: Double = 0.0,
     val listOfTags: ImmutableList<String> = persistentListOf(),

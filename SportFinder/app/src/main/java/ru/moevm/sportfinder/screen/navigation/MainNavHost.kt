@@ -53,6 +53,7 @@ fun MainNavHost(
     navigationController: NavigationController,
     updateBottomBarVisible: (Boolean) -> Unit,
     updateTopBarType: (isVisible: Boolean, type: CommonTopBarType?) -> Unit,
+    showToast: (text: String) -> Unit
 ) {
     NavHost(
         navController = navigationController.navHostController,
@@ -237,11 +238,10 @@ fun MainNavHost(
                 val viewModel = hiltViewModel<TrainingInfoViewModel>()
                 val state by viewModel.state.collectAsStateWithLifecycle()
                 updateBottomBarVisible(true)
-                val context = LocalContext.current
                 val topBarType = CommonTopBarTypeBuilder()
                     .setBackButtonAsNavigationButton(navigationController::navigateBack)
                     .addMenuButton(R.drawable.ic_top_bar_share) {
-                        Toast.makeText(context, "https://sportfinder.com", Toast.LENGTH_LONG).show()
+                        showToast("https://sportfinder.com")
                     }
                     .build()
                 updateTopBarType(true, topBarType)
@@ -272,7 +272,7 @@ fun MainNavHost(
                     state = state,
                     onTextForFilterChanged = viewModel::onTextForFilterChanged,
                     onFilterApply = viewModel::onFilterApply,
-                    navigateToRunningInfoScreen = { navigationController.navigateToRunningInfo() },
+                    navigateToRunningInfoScreen = { id -> navigationController.navigateToRunningInfo(id) },
                     navigateToRunningCreateScreen = navigationController::navigateToRunningCreate
                 )
             }
@@ -299,19 +299,26 @@ fun MainNavHost(
                     onSaveTagsDialogClick = viewModel::onSaveTagsDialogClick,
                     onDismissTagsDialogClick = viewModel::onDismissTagsDialogClick,
                     onRemoveTagClick = viewModel::onRemoveTagClick,
-                    onSaveClick = { /*TODO*/ },
+                    onSaveClick = {
+                        viewModel.onSaveClick(onSuccess = {
+                            navigationController.navigateToRunning()
+                        })
+                    },
                 )
             }
 
-            composable(route = Screen.RUNNING_INFO_SCREEN.route) {
+            composable(route = Screen.RUNNING_INFO_SCREEN.route + "/{runningId}",
+                arguments = listOf(navArgument("runningId") {
+                    type = NavType.IntType
+                })
+            ) {
                 val viewModel = hiltViewModel<RunningInfoViewModel>()
                 val state by viewModel.state.collectAsStateWithLifecycle()
                 updateBottomBarVisible(true)
-                val context = LocalContext.current
                 val topBarType = CommonTopBarTypeBuilder()
                     .setBackButtonAsNavigationButton(navigationController::navigateBack)
                     .addMenuButton(R.drawable.ic_top_bar_share) {
-                        Toast.makeText(context, "https://sportfinder.com", Toast.LENGTH_LONG).show()
+                        showToast("https://sportfinder.com")
                     }
                     .build()
                 updateTopBarType(true, topBarType)
