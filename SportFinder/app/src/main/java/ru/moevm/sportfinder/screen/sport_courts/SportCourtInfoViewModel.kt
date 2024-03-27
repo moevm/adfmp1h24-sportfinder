@@ -9,17 +9,17 @@ import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import ru.moevm.sportfinder.common.Constants
+import ru.moevm.sportfinder.domain.sharing.SharingTextGenerator
 import ru.moevm.sportfinder.domain.use_case.GetSportCourtByIdUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class SportCourtInfoViewModel @Inject constructor(
     private val getSportCourtByIdUseCase: GetSportCourtByIdUseCase,
+    private val sharingTextGenerator: SharingTextGenerator,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -28,19 +28,17 @@ class SportCourtInfoViewModel @Inject constructor(
     private val _state = MutableStateFlow(SportCourtInfoState())
     val state = _state.asStateFlow()
 
-    private val _isShareUrlClicked = MutableStateFlow(false)
-    val isShareUrlClicked = _isShareUrlClicked.asStateFlow()
-
     init {
         loadSportCourtInfo()
     }
 
-    fun onShareClick() {
-        _isShareUrlClicked.value = true
-    }
-
-    fun onSharedUrlShown() {
-        _isShareUrlClicked.value = false
+    fun getSharingText(): String {
+        return sharingTextGenerator.fromSportCourtInfo(
+            _state.value.courtName,
+            _state.value.courtAddress,
+            _state.value.courtTags.toList(),
+            _state.value.courtInfo
+        )
     }
 
     fun onFavoritesClicked() {

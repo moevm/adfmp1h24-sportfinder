@@ -1,7 +1,6 @@
 package ru.moevm.sportfinder.screen.sport_courts
 
 import android.view.MotionEvent
-import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -59,8 +58,6 @@ import java.text.DecimalFormat
 @Composable
 fun SportCourtInfoScreen(
     state: SportCourtInfoState,
-    isShareUrlClicked: Boolean,
-    onSharedUrlShown: () -> Unit,
     onFavoritesClicked: () -> Unit,
 ) {
     val (courtName, courtAddress, courtInitialPoint, courtDistance, courtWeatherTemperature, courtAmountFavorites, isFavorite, courtTags, courtInfo, courtLinkUrl) = state
@@ -69,13 +66,6 @@ fun SportCourtInfoScreen(
         position = CameraPosition.fromLatLngZoom(courtInitialPoint ?: Constants.SPB_CENTER_POINT, 15.0f)
     })
     var columnScrollingEnabled by remember { mutableStateOf(true) }
-
-    LaunchedEffect(isShareUrlClicked) {
-        if (isShareUrlClicked) {
-            Toast.makeText(context, courtLinkUrl, Toast.LENGTH_LONG).show()
-            onSharedUrlShown()
-        }
-    }
 
     LaunchedEffect(courtInitialPoint) {
         cameraPosition.move(CameraUpdateFactory.newLatLng(courtInitialPoint ?: Constants.SPB_CENTER_POINT))
