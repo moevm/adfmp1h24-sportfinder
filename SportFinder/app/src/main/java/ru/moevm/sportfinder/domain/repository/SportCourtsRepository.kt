@@ -5,7 +5,7 @@ import ru.moevm.sportfinder.data.dto.SportCourtsDTO
 
 interface SportCourtsRepository {
 
-    suspend fun getSportCourtsList(season: String, page: Int, count: Int): SportCourtsDTO
+    suspend fun getSportCourtsList(season: String, page: Int, count: Int): SportCourtsDTO?
 
-    suspend fun getSportCourtById(id: Int): SportCourtAdvancedDTO
+    suspend fun getSportCourtById(id: Int): SportCourtAdvancedDTO?
 }

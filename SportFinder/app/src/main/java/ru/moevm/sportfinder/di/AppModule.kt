@@ -20,6 +20,7 @@ import ru.moevm.sportfinder.data.db.ProfileDao
 import ru.moevm.sportfinder.data.db.ProfileDaoImpl
 import ru.moevm.sportfinder.data.db.room.RunningDao
 import ru.moevm.sportfinder.data.db.room.SportFinderDatabase
+import ru.moevm.sportfinder.data.db.room.TrainingDao
 import ru.moevm.sportfinder.data.remote.ServerApi
 import ru.moevm.sportfinder.domain.sharing.SharingTextGenerator
 import ru.moevm.sportfinder.domain.sharing.SharingTextGeneratorImpl
@@ -77,6 +78,12 @@ object AppModule {
     @Singleton
     fun provideRunningDao(database: SportFinderDatabase): RunningDao {
         return database.runningDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideTrainingDao(database: SportFinderDatabase): TrainingDao {
+        return database.trainingDao()
     }
 
     @Provides

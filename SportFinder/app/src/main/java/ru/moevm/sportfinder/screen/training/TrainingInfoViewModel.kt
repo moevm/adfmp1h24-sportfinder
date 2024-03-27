@@ -1,9 +1,10 @@
 package ru.moevm.sportfinder.screen.training
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,12 +13,17 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.moevm.sportfinder.domain.sharing.SharingTextGenerator
+import ru.moevm.sportfinder.domain.use_case.UseTrainingDatabaseUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class TrainingInfoViewModel @Inject constructor(
     private val sharingTextGenerator: SharingTextGenerator,
+    private val useTrainingDatabaseUseCase: UseTrainingDatabaseUseCase,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
+    private val trainingId = savedStateHandle.get<Int>("trainingId")
 
     private val _state = MutableStateFlow(TrainingInfoState())
     val state = _state.asStateFlow()
@@ -30,22 +36,20 @@ class TrainingInfoViewModel @Inject constructor(
     }
 
     fun updateTrainingInfoState() {
-        flow {
-            val fakeData = getFakeData()
-            emit(fakeData)
+        trainingId?.let {
+            useTrainingDatabaseUseCase.getTrainingById(trainingId)
+                .flowOn(Dispatchers.IO)
+                .onEach { trainingDTO ->
+                    if (trainingDTO == null) {
+                        return@onEach
+                    }
+                    _state.value = TrainingInfoState(
+                        name = trainingDTO.name,
+                        tags = trainingDTO.tags.toPersistentList(),
+                        description = trainingDTO.description
+                    )
+                }
+                .launchIn(viewModelScope)
         }
-            .flowOn(Dispatchers.IO)
-            .onEach { newData ->
-                _state.value = newData
-            }
-            .launchIn(viewModelScope)
     }
-
-    private fun getFakeData() = TrainingInfoState(
-        name = "Скакалка",
-        tags = persistentListOf("Тренировка", "Асфальт", "Деревья"),
-        description = "1 шаг: Провести разминку - вращение головой, вращение руками, вращение туловищем\n" +
-                "2 шаг: Взять скакалку, выполнить 80 прыжков, сделать 3 подхода с уменьшением количества прыжков каждый раз на 10\n"
-    )
-
 }

@@ -49,8 +49,8 @@ class NavigationController(
     fun navigateToTrainingList() =
         navHostController.navigate(Screen.TRAINING_LIST_SCREEN.route)
 
-    fun navigateToTrainingInfo() =
-        navHostController.navigate(Screen.TRAINING_INFO_SCREEN.route)
+    fun navigateToTrainingInfo(id: Int) =
+        navHostController.navigate(Screen.TRAINING_INFO_SCREEN.route + "/$id")
 
     fun navigateToTrainingCreate() =
         navHostController.navigate(Screen.TRAINING_CREATE_SCREEN.route)

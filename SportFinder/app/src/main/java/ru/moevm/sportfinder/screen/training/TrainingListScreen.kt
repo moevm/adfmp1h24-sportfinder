@@ -40,7 +40,7 @@ fun TrainingListScreen(
     onTextForFilterChanged: (String) -> Unit,
     onFilterApply: () -> Unit,
     navigateToCreateTrainingScreen: () -> Unit,
-    navigateToTrainingInfoScreen: (Long) -> Unit,
+    navigateToTrainingInfoScreen: (Int) -> Unit,
 ) {
     val (listOfTraining, textForFilter, isLoading) = state
 
@@ -102,7 +102,7 @@ fun TrainingListScreen(
 @Composable
 private fun TrainingListItem(
     trainingListItem: TrainingListItemVO,
-    navigateToTrainingInfoScreen: (Long) -> Unit,
+    navigateToTrainingInfoScreen: (Int) -> Unit,
 ) {
     val (runningId, name, tags, temperature) = trainingListItem
 
@@ -172,7 +172,7 @@ private fun TrainingListScreenPreview() {
                     trainingId = 0,
                     name = "Старая деревня",
                     tags = persistentListOf("Вкусно"),
-                    temperature = 13.4F,
+                    temperature = 13,
                 ),
             ),
             textForFilter = "",
@@ -193,7 +193,7 @@ private fun TrainingListItemPreview() {
             trainingId = 0,
             name = "Старая деревня",
             tags = persistentListOf("Вкусно"),
-            temperature = 13.4F,
+            temperature = 13,
         ),
         {},
     )

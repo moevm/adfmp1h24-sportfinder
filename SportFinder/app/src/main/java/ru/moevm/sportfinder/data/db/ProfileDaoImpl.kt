@@ -25,6 +25,10 @@ class ProfileDaoImpl @Inject constructor(
         return dataStore.data.first()[imageUrlKey]
     }
 
+    override suspend fun getProfileLogin(): String? {
+        return dataStore.data.first()[loginKey]
+    }
+
     override suspend fun setProfileData(name: String, imageUrl: String) {
         dataStore.edit { profileData ->
             profileData[nameKey] = name
