@@ -150,7 +150,7 @@ private fun SportCourtListItemContent(
                 val courtAttributesModifier = Modifier.padding(end = 8.dp)
                 val courtIconsAttributesModifier = Modifier.padding(end = 8.dp)
 
-                temperature?.let {
+                temperature.let {
                     Icon(
                         painter = painterResource(R.drawable.ic_sport_court_screen_weather),
                         contentDescription = "Temperature sign",
@@ -181,7 +181,7 @@ fun SportsCourtListScreenPreview() {
                     courtId = 0,
                     name = "Старая деревня",
                     tags = persistentListOf("Вкусно"),
-                    temperature = 13.4F,
+                    temperature = 13,
                 ),
             ),
             textForFilter = "",
@@ -202,7 +202,7 @@ private fun SportCourtListItemPreview() {
             courtId = 0,
             name = "Старая деревня",
             tags = persistentListOf("Вкусно"),
-            temperature = 13.4F,
+            temperature = 13,
         ),
         {},
     )

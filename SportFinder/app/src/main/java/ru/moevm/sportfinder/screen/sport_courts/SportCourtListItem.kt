@@ -7,5 +7,5 @@ data class SportCourtListItem(
     val courtId: Int,
     val name: String,
     val tags: ImmutableList<String> = persistentListOf(),
-    val temperature: Float? = null,
+    val temperature: Int,
 )
