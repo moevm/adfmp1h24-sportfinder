@@ -202,7 +202,7 @@ fun MainNavHost(
                     onTextForFilterChanged = viewModel::onTextForFilterChanged,
                     onFilterApply = viewModel::onFilterApply,
                     navigateToCreateTrainingScreen = navigationController::navigateToTrainingCreate,
-                    navigateToTrainingInfoScreen = { id -> navigationController.navigateToTrainingInfo() }
+                    navigateToTrainingInfoScreen = { id -> navigationController.navigateToTrainingInfo(id) }
                 )
             }
 
@@ -227,13 +227,18 @@ fun MainNavHost(
                     onChangeDescriptionClick = viewModel::onChangeDescriptionClick,
                     onChangeDescription = viewModel::onChangeDescription,
                     onSaveClick = {
-                        viewModel.onSaveClick()
-                        navigationController.navigateToTraining()
+                        viewModel.onSaveClick(onSuccess = {
+                            navigationController.navigateToTraining()
+                        })
                     }
                 )
             }
 
-            composable(route = Screen.TRAINING_INFO_SCREEN.route) {
+            composable(route = Screen.TRAINING_INFO_SCREEN.route + "/{trainingId}",
+                arguments = listOf(navArgument("trainingId") {
+                    type = NavType.IntType
+                })
+            ) {
                 val viewModel = hiltViewModel<TrainingInfoViewModel>()
                 val state by viewModel.state.collectAsStateWithLifecycle()
                 updateBottomBarVisible(true)
