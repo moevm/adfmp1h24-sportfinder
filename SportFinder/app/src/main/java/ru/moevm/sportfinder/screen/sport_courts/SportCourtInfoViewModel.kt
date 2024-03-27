@@ -9,17 +9,21 @@ import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.moevm.sportfinder.domain.sharing.SharingTextGenerator
 import ru.moevm.sportfinder.domain.use_case.GetSportCourtByIdUseCase
+import ru.moevm.sportfinder.domain.use_case.GetWeatherTemperatureUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class SportCourtInfoViewModel @Inject constructor(
     private val getSportCourtByIdUseCase: GetSportCourtByIdUseCase,
     private val sharingTextGenerator: SharingTextGenerator,
+    private val getWeatherTemperatureUseCase: GetWeatherTemperatureUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -49,36 +53,37 @@ class SportCourtInfoViewModel @Inject constructor(
 
     private fun loadSportCourtInfo() {
         sportCourtId?.let {
-            getSportCourtByIdUseCase(sportCourtId)
+
+            flow {
+                val sportCourt = getSportCourtByIdUseCase(sportCourtId).first()
+                val sportCourtInfoState = if (sportCourt == null) {
+                    SportCourtInfoState(
+                        courtName = "Ошибка",
+                        courtAddress = "",
+                        courtInitialPoint = null,
+                        courtTemperature = 0,
+                        courtAmountFavorites = 0,
+                        isFavorite = false,
+                        courtTags = persistentListOf(),
+                        courtInfo = "Ошибка получения данных",
+                    )
+                } else {
+                    val temperature = getWeatherTemperatureUseCase(sportCourt.coordinates).first()
+                    SportCourtInfoState(
+                        courtName = sportCourt.name,
+                        courtAddress = sportCourt.address,
+                        courtInitialPoint = sportCourt.coordinates,
+                        courtTemperature = temperature,
+                        courtAmountFavorites = 0,
+                        isFavorite = false,
+                        courtTags = sportCourt.tags.toPersistentList(),
+                        courtInfo = sportCourt.info,
+                    )
+                }
+                emit(sportCourtInfoState)
+            }
                 .flowOn(Dispatchers.IO)
-                .onEach { newState ->
-                    val sportCourtInfoState = if (newState == null) {
-                        SportCourtInfoState(
-                            courtName = "Ошибка",
-                            courtAddress = "",
-                            courtInitialPoint = null,
-                            courtDistance = 0.0,
-                            courtWeatherTemperature = 0,
-                            courtAmountFavorites = 0,
-                            isFavorite = false,
-                            courtTags = persistentListOf(),
-                            courtInfo = "Ошибка получения данных",
-                            courtLinkUrl = ""
-                        )
-                    } else {
-                        SportCourtInfoState(
-                            courtName = newState.name,
-                            courtAddress = newState.address,
-                            courtInitialPoint = newState.coordinates,
-                            courtDistance = 0.0,
-                            courtWeatherTemperature = 0,
-                            courtAmountFavorites = 0,
-                            isFavorite = false,
-                            courtTags = newState.tags.toPersistentList(),
-                            courtInfo = newState.info,
-                            courtLinkUrl = ""
-                        )
-                    }
+                .onEach { sportCourtInfoState ->
                     _state.value = sportCourtInfoState
                 }
                 .launchIn(viewModelScope)

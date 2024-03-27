@@ -52,7 +52,6 @@ import ru.moevm.sportfinder.R
 import ru.moevm.sportfinder.common.Constants
 import ru.moevm.sportfinder.screen.common_components.DefaultGoogleMap
 import ru.moevm.sportfinder.ui.theme.SportFinderLightColorScheme
-import java.text.DecimalFormat
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
@@ -60,7 +59,7 @@ fun SportCourtInfoScreen(
     state: SportCourtInfoState,
     onFavoritesClicked: () -> Unit,
 ) {
-    val (courtName, courtAddress, courtInitialPoint, courtDistance, courtWeatherTemperature, courtAmountFavorites, isFavorite, courtTags, courtInfo, courtLinkUrl) = state
+    val (courtName, courtAddress, courtInitialPoint, courtTemperature, courtAmountFavorites, isFavorite, courtTags, courtInfo) = state
     val context = LocalContext.current
     val cameraPosition = rememberCameraPositionState(init = {
         position = CameraPosition.fromLatLngZoom(courtInitialPoint ?: Constants.SPB_CENTER_POINT, 15.0f)
@@ -161,12 +160,8 @@ fun SportCourtInfoScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 IconWithText(
-                    iconId = R.drawable.ic_sport_court_screen_distance,
-                    text = DecimalFormat("###.##км").format(courtDistance)
-                )
-                IconWithText(
                     iconId = R.drawable.ic_sport_court_screen_weather,
-                    text = "${withSigh(courtWeatherTemperature)}C"
+                    text = "${withSigh(courtTemperature)}C"
                 )
                 IconWithText(
                     iconId = R.drawable.ic_sport_court_screen_favorite_active,

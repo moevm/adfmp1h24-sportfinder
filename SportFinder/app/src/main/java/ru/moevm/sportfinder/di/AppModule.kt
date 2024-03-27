@@ -16,12 +16,14 @@ import retrofit2.converter.gson.GsonConverterFactory
 import ru.moevm.sportfinder.common.Constants
 import ru.moevm.sportfinder.common.Constants.SPORT_COURTS_API_URL
 import ru.moevm.sportfinder.common.userProfileDataStore
+import ru.moevm.sportfinder.data.controller.WeatherControllerImpl
 import ru.moevm.sportfinder.data.db.ProfileDao
 import ru.moevm.sportfinder.data.db.ProfileDaoImpl
 import ru.moevm.sportfinder.data.db.room.RunningDao
 import ru.moevm.sportfinder.data.db.room.SportFinderDatabase
 import ru.moevm.sportfinder.data.db.room.TrainingDao
 import ru.moevm.sportfinder.data.remote.ServerApi
+import ru.moevm.sportfinder.domain.controller.WeatherController
 import ru.moevm.sportfinder.domain.sharing.SharingTextGenerator
 import ru.moevm.sportfinder.domain.sharing.SharingTextGeneratorImpl
 import java.util.concurrent.TimeUnit
@@ -90,5 +92,11 @@ object AppModule {
     @Singleton
     fun provideSharingTextGenerator(): SharingTextGenerator {
         return SharingTextGeneratorImpl()
+    }
+
+    @Provides
+    @Singleton
+    fun provideWeatherController(): WeatherController {
+        return WeatherControllerImpl()
     }
 }

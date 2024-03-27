@@ -8,11 +8,9 @@ data class SportCourtInfoState(
     val courtName: String = "",
     val courtAddress: String = "",
     val courtInitialPoint: LatLng? = null,
-    val courtDistance: Double = 0.0,
-    val courtWeatherTemperature: Int = 0,
+    val courtTemperature: Int = 0,
     val courtAmountFavorites: Int = 0,
     val isFavorite: Boolean = false,
     val courtTags: ImmutableList<String> = persistentListOf(),
     val courtInfo: String = "",
-    val courtLinkUrl: String = "",
 )

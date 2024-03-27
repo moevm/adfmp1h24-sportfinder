@@ -7,12 +7,15 @@ import dagger.hilt.android.components.ViewModelComponent
 import ru.moevm.sportfinder.data.db.ProfileDao
 import ru.moevm.sportfinder.data.db.room.RunningDao
 import ru.moevm.sportfinder.data.db.room.TrainingDao
+import ru.moevm.sportfinder.domain.controller.WeatherController
 import ru.moevm.sportfinder.domain.repository.SportCourtsRepository
 import ru.moevm.sportfinder.domain.use_case.CreateProfileUseCase
 import ru.moevm.sportfinder.domain.use_case.GetProfileImageUrlUseCase
 import ru.moevm.sportfinder.domain.use_case.GetProfileLoginUseCase
 import ru.moevm.sportfinder.domain.use_case.GetProfileNameUseCase
 import ru.moevm.sportfinder.domain.use_case.GetSportCourtsUseCase
+import ru.moevm.sportfinder.domain.use_case.GetWeatherTemperatureUseCase
+import ru.moevm.sportfinder.domain.use_case.GetWeatherTemperaturesUseCase
 import ru.moevm.sportfinder.domain.use_case.IsAutoSignInEnabledUseCase
 import ru.moevm.sportfinder.domain.use_case.IsProfileExistsFromLoginScreenUseCase
 import ru.moevm.sportfinder.domain.use_case.SetAutoSignInUseCase
@@ -68,4 +71,12 @@ object UseCaseModule {
     @Provides
     fun provideUseTrainingDatabaseUseCase(trainingDao: TrainingDao, getProfileLoginUseCase: GetProfileLoginUseCase) =
         UseTrainingDatabaseUseCase(trainingDao, getProfileLoginUseCase)
+
+    @Provides
+    fun provideGetWeatherTemperatureUseCase(weatherController: WeatherController) =
+        GetWeatherTemperatureUseCase(weatherController)
+
+    @Provides
+    fun provideGetWeatherTemperaturesUseCase(weatherController: WeatherController) =
+        GetWeatherTemperaturesUseCase(weatherController)
 }

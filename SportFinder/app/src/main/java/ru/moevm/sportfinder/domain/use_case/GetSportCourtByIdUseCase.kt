@@ -3,11 +3,11 @@ package ru.moevm.sportfinder.domain.use_case
 import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import ru.moevm.sportfinder.data.dto.SportCourtAdvancedDTO
 import ru.moevm.sportfinder.domain.repository.SportCourtsRepository
 import ru.moevm.sportfinder.domain.view_object.SportCourtAdvancedVO
-import java.lang.Exception
 import javax.inject.Inject
 
 class GetSportCourtByIdUseCase @Inject constructor(
@@ -15,26 +15,24 @@ class GetSportCourtByIdUseCase @Inject constructor(
 ) {
 
     operator fun invoke(id: Int): Flow<SportCourtAdvancedVO?> = flow {
-        try {
-            val result = sportCourtsRepository.getSportCourtById(id)
-            if (result == null) {
-                emit(null)
-                return@flow
-            }
-            val resultAsVO = SportCourtAdvancedVO(
-                id = result.id ?: throw IllegalStateException("id is null"),
-                name = result.name ?: throw IllegalStateException("name is null"),
-                coordinates = result.coordinates?.let { LatLng(result.coordinates[0], result.coordinates[1]) } ?: throw IllegalStateException("coordinates is null"),
-                address = result.address ?: "",
-                tags = result.categories?.split(", ") ?: emptyList(),
-                info = buildSportCourtInfo(result)
-            )
-
-            emit(resultAsVO)
-        } catch (e: Exception) {
-            Log.d("GetSportCourtByIdUseCase", "${e.message}")
+        val result = sportCourtsRepository.getSportCourtById(id)
+        if (result == null) {
             emit(null)
+            return@flow
         }
+        val resultAsVO = SportCourtAdvancedVO(
+            id = result.id ?: throw IllegalStateException("id is null"),
+            name = result.name ?: throw IllegalStateException("name is null"),
+            coordinates = result.coordinates?.let { LatLng(result.coordinates[0], result.coordinates[1]) } ?: throw IllegalStateException("coordinates is null"),
+            address = result.address ?: "",
+            tags = result.categories?.split(", ") ?: emptyList(),
+            info = buildSportCourtInfo(result)
+        )
+
+        emit(resultAsVO)
+    }.catch { t ->
+        Log.d("GetSportCourtByIdUseCase", "${t.message}")
+        emit(null)
     }
 
     private fun buildSportCourtInfo(result: SportCourtAdvancedDTO): String {
