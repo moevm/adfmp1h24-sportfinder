@@ -15,7 +15,7 @@ private const val SUBDATA_SEPARATOR = "/"
 
 class UseRunningDatabaseUseCase @Inject constructor(
     private val runningDao: RunningDao,
-    private val getProfileNameUseCase: GetProfileNameUseCase,
+    private val getProfileLoginUseCase: GetProfileLoginUseCase,
 ) {
 
     fun addRunning(
@@ -23,14 +23,14 @@ class UseRunningDatabaseUseCase @Inject constructor(
         tags: List<String>,
         points: List<LatLng>
     ): Flow<Boolean> = flow {
-        val name = getProfileNameUseCase().first()
-        if (name == null) {
+        val login = getProfileLoginUseCase().first()
+        if (login == null) {
             emit(false)
             return@flow
         }
 
         val runningData = RunningData(
-            author = name,
+            author = login,
             title = title,
             tags = tags.joinToString(separator = DATA_SEPARATOR),
             points = points

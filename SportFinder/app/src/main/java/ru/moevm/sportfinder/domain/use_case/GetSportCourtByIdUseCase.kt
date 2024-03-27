@@ -17,6 +17,10 @@ class GetSportCourtByIdUseCase @Inject constructor(
     operator fun invoke(id: Int): Flow<SportCourtAdvancedVO?> = flow {
         try {
             val result = sportCourtsRepository.getSportCourtById(id)
+            if (result == null) {
+                emit(null)
+                return@flow
+            }
             val resultAsVO = SportCourtAdvancedVO(
                 id = result.id ?: throw IllegalStateException("id is null"),
                 name = result.name ?: throw IllegalStateException("name is null"),
