@@ -5,15 +5,20 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import ru.moevm.sportfinder.data.db.ProfileDao
+import ru.moevm.sportfinder.data.db.room.RunningDao
+import ru.moevm.sportfinder.data.db.room.TrainingDao
 import ru.moevm.sportfinder.domain.repository.SportCourtsRepository
 import ru.moevm.sportfinder.domain.use_case.CreateProfileUseCase
 import ru.moevm.sportfinder.domain.use_case.GetProfileImageUrlUseCase
+import ru.moevm.sportfinder.domain.use_case.GetProfileLoginUseCase
 import ru.moevm.sportfinder.domain.use_case.GetProfileNameUseCase
 import ru.moevm.sportfinder.domain.use_case.GetSportCourtsUseCase
 import ru.moevm.sportfinder.domain.use_case.IsAutoSignInEnabledUseCase
 import ru.moevm.sportfinder.domain.use_case.IsProfileExistsFromLoginScreenUseCase
 import ru.moevm.sportfinder.domain.use_case.SetAutoSignInUseCase
 import ru.moevm.sportfinder.domain.use_case.SetProfileDataUseCase
+import ru.moevm.sportfinder.domain.use_case.UseRunningDatabaseUseCase
+import ru.moevm.sportfinder.domain.use_case.UseTrainingDatabaseUseCase
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -30,6 +35,10 @@ object UseCaseModule {
     @Provides
     fun provideGetProfileImageUrlUseCase(profileDao: ProfileDao) =
         GetProfileImageUrlUseCase(profileDao)
+
+    @Provides
+    fun provideGetProfileLoginUseCase(profileDao: ProfileDao) =
+        GetProfileLoginUseCase(profileDao)
 
     @Provides
     fun provideSetProfileDataUseCase(profileDao: ProfileDao) =
@@ -50,4 +59,13 @@ object UseCaseModule {
     @Provides
     fun provideSetAutoSignInUseCase(profileDao: ProfileDao) =
         SetAutoSignInUseCase(profileDao)
+
+    @Provides
+    fun provideUseRunningDatabaseUseCase(runningDao: RunningDao, getProfileLoginUseCase: GetProfileLoginUseCase) =
+        UseRunningDatabaseUseCase(runningDao, getProfileLoginUseCase)
+
+
+    @Provides
+    fun provideUseTrainingDatabaseUseCase(trainingDao: TrainingDao, getProfileLoginUseCase: GetProfileLoginUseCase) =
+        UseTrainingDatabaseUseCase(trainingDao, getProfileLoginUseCase)
 }

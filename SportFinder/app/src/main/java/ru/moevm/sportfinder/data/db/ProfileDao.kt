@@ -6,6 +6,8 @@ interface ProfileDao {
 
     suspend fun getProfileImageUrl(): String?
 
+    suspend fun getProfileLogin(): String?
+
     suspend fun setProfileData(name: String, imageUrl: String)
 
     suspend fun isAutoSignInEnabled(): Boolean
