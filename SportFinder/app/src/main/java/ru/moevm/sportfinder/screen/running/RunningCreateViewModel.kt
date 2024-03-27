@@ -61,6 +61,9 @@ class RunningCreateViewModel @Inject constructor(
     }
 
     fun onSaveClick(onSuccess: () -> Unit) {
+        if (_state.value.title.isBlank() || _state.value.listOfPoints.isEmpty()) {
+            return
+        }
         useRunningDatabaseUseCase.addRunning(
             _state.value.title,
             _state.value.listOfTags,

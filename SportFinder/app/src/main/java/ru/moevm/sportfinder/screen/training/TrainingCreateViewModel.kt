@@ -50,6 +50,9 @@ class TrainingCreateViewModel @Inject constructor() : ViewModel() {
     }
 
     fun onSaveClick() {
+        if (_state.value.name.isBlank() || _state.value.description.isBlank()) {
+            return
+        }
         // TODO: Сделать сохранение 
     }
 }
