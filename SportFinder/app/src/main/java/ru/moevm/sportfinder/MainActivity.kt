@@ -1,7 +1,6 @@
 package ru.moevm.sportfinder
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -25,6 +24,7 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
+import ru.moevm.sportfinder.common.Utils
 import ru.moevm.sportfinder.screen.common_components.BottomNavItem
 import ru.moevm.sportfinder.screen.common_components.common_top_bar.CommonTopBar
 import ru.moevm.sportfinder.screen.navigation.MainNavHost
@@ -37,8 +37,8 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val showToast = { text: String ->
-            Toast.makeText(this, text, Toast.LENGTH_LONG).show()
+        val shareText = { text: String ->
+            Utils.shareText(this, text)
         }
 
         setContent {
@@ -77,7 +77,7 @@ class MainActivity : ComponentActivity() {
                             navigationController = navigationController,
                             updateBottomBarVisible = viewModel::onBottomBarVisibleStateUpdate,
                             updateTopBarType = viewModel::onTopBarTypeUpdated,
-                            showToast = showToast
+                            shareText = shareText
                         )
                     }
                 }

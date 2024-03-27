@@ -11,13 +11,23 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import ru.moevm.sportfinder.domain.sharing.SharingTextGenerator
 import javax.inject.Inject
 
 @HiltViewModel
-class TrainingInfoViewModel @Inject constructor() : ViewModel() {
+class TrainingInfoViewModel @Inject constructor(
+    private val sharingTextGenerator: SharingTextGenerator,
+) : ViewModel() {
 
     private val _state = MutableStateFlow(TrainingInfoState())
     val state = _state.asStateFlow()
+
+    fun getSharingText(): String {
+        return sharingTextGenerator.fromTrainingInfo(
+            _state.value.name,
+            _state.value.tags
+        )
+    }
 
     fun updateTrainingInfoState() {
         flow {

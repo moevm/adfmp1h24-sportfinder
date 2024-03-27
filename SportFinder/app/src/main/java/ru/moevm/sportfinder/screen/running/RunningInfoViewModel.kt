@@ -9,12 +9,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import ru.moevm.sportfinder.domain.sharing.SharingTextGenerator
 import ru.moevm.sportfinder.domain.use_case.UseRunningDatabaseUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class RunningInfoViewModel @Inject constructor(
     private val useRunningDatabaseUseCase: UseRunningDatabaseUseCase,
+    private val sharingTextGenerator: SharingTextGenerator,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -22,6 +24,14 @@ class RunningInfoViewModel @Inject constructor(
 
     private val _state = MutableStateFlow(RunningInfoState())
     val state = _state.asStateFlow()
+
+    fun getSharingText(): String {
+        return sharingTextGenerator.fromRunningInfo(
+            _state.value.title,
+            _state.value.distance,
+            _state.value.listOfTags.toList()
+        )
+    }
 
     fun initState() {
         runningId?.let {

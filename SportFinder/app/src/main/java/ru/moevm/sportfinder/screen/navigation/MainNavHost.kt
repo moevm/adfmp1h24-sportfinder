@@ -53,7 +53,7 @@ fun MainNavHost(
     navigationController: NavigationController,
     updateBottomBarVisible: (Boolean) -> Unit,
     updateTopBarType: (isVisible: Boolean, type: CommonTopBarType?) -> Unit,
-    showToast: (text: String) -> Unit
+    shareText: (text: String) -> Unit
 ) {
     NavHost(
         navController = navigationController.navHostController,
@@ -169,18 +169,17 @@ fun MainNavHost(
             ) {
                 val viewModel = hiltViewModel<SportCourtInfoViewModel>()
                 val state by viewModel.state.collectAsStateWithLifecycle()
-                val isShareUrlClicked by viewModel.isShareUrlClicked.collectAsStateWithLifecycle()
                 updateBottomBarVisible(true)
                 val topBarType = CommonTopBarTypeBuilder()
                     .setBackButtonAsNavigationButton(navigationController::navigateBack)
-                    .addMenuButton(R.drawable.ic_top_bar_share, viewModel::onShareClick)
+                    .addMenuButton(R.drawable.ic_top_bar_share) {
+                        shareText(viewModel.getSharingText())
+                    }
                     .build()
                 updateTopBarType(true, topBarType)
 
                 SportCourtInfoScreen(
                     state = state,
-                    isShareUrlClicked = isShareUrlClicked,
-                    onSharedUrlShown = viewModel::onSharedUrlShown,
                     onFavoritesClicked = viewModel::onFavoritesClicked,
                 )
             }
@@ -241,7 +240,7 @@ fun MainNavHost(
                 val topBarType = CommonTopBarTypeBuilder()
                     .setBackButtonAsNavigationButton(navigationController::navigateBack)
                     .addMenuButton(R.drawable.ic_top_bar_share) {
-                        showToast("https://sportfinder.com")
+                        shareText(viewModel.getSharingText())
                     }
                     .build()
                 updateTopBarType(true, topBarType)
@@ -318,7 +317,7 @@ fun MainNavHost(
                 val topBarType = CommonTopBarTypeBuilder()
                     .setBackButtonAsNavigationButton(navigationController::navigateBack)
                     .addMenuButton(R.drawable.ic_top_bar_share) {
-                        showToast("https://sportfinder.com")
+                        shareText(viewModel.getSharingText())
                     }
                     .build()
                 updateTopBarType(true, topBarType)

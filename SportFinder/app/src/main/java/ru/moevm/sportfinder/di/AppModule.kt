@@ -21,6 +21,8 @@ import ru.moevm.sportfinder.data.db.ProfileDaoImpl
 import ru.moevm.sportfinder.data.db.room.RunningDao
 import ru.moevm.sportfinder.data.db.room.SportFinderDatabase
 import ru.moevm.sportfinder.data.remote.ServerApi
+import ru.moevm.sportfinder.domain.sharing.SharingTextGenerator
+import ru.moevm.sportfinder.domain.sharing.SharingTextGeneratorImpl
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -75,5 +77,11 @@ object AppModule {
     @Singleton
     fun provideRunningDao(database: SportFinderDatabase): RunningDao {
         return database.runningDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideSharingTextGenerator(): SharingTextGenerator {
+        return SharingTextGeneratorImpl()
     }
 }
