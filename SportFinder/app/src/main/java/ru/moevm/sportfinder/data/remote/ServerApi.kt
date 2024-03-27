@@ -11,10 +11,10 @@ interface ServerApi {
         @Query("season") season: String,
         @Query("page") page: Int,
         @Query("count") count: Int,
-    ): SportCourtsDTO
+    ): SportCourtsDTO?
 
     @GET("sportgrounds/id")
     suspend fun getSportCourtById(
         @Query("id") id: Int
-    ): SportCourtAdvancedDTO
+    ): SportCourtAdvancedDTO?
 }
