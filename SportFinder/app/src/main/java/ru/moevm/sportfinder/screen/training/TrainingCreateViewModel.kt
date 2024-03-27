@@ -1,14 +1,20 @@
 package ru.moevm.sportfinder.screen.training
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import ru.moevm.sportfinder.domain.use_case.UseTrainingDatabaseUseCase
 import javax.inject.Inject
 
 @HiltViewModel
-class TrainingCreateViewModel @Inject constructor() : ViewModel() {
+class TrainingCreateViewModel @Inject constructor(
+    private val useTrainingDatabaseUseCase: UseTrainingDatabaseUseCase,
+) : ViewModel() {
     private val _state = MutableStateFlow(TrainingCreateState())
     val state = _state.asStateFlow()
 
@@ -49,10 +55,20 @@ class TrainingCreateViewModel @Inject constructor() : ViewModel() {
         _state.value = _state.value.copy(description = newDescription)
     }
 
-    fun onSaveClick() {
+    fun onSaveClick(onSuccess: () -> Unit) {
         if (_state.value.name.isBlank() || _state.value.description.isBlank()) {
             return
         }
-        // TODO: Сделать сохранение 
+        useTrainingDatabaseUseCase.addTraining(
+            _state.value.name,
+            _state.value.tags,
+            _state.value.description
+        )
+            .onEach { isSuccess ->
+                if (isSuccess) {
+                    onSuccess()
+                }
+            }
+            .launchIn(viewModelScope)
     }
 }
