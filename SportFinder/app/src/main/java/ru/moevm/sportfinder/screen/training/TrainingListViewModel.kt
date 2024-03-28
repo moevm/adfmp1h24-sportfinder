@@ -1,5 +1,6 @@
 package ru.moevm.sportfinder.screen.training
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -37,7 +38,7 @@ class TrainingListViewModel @Inject constructor(
         useTrainingDatabaseUseCase.getTrainings()
             .onEach { trainingDTOS ->
                 val filteredData = if (filter.isNotBlank()) {
-                    trainingDTOS.filter { filter in it.name }
+                    trainingDTOS.filter { filter in it.name.lowercase() }
                 } else {
                     trainingDTOS
                 }
@@ -47,7 +48,6 @@ class TrainingListViewModel @Inject constructor(
                             trainingId = trainingDTO.id,
                             name = trainingDTO.name,
                             tags = trainingDTO.tags.toPersistentList(),
-                            6,
                         )
                     }.toPersistentList(),
                     isLoading = false

@@ -7,5 +7,4 @@ data class TrainingListItemVO(
     val trainingId: Int,
     val name: String,
     val tags: ImmutableList<String> = persistentListOf(),
-    val temperature: Int? = null,
 )
