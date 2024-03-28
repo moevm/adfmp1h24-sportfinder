@@ -21,9 +21,10 @@ class UseRunningDatabaseUseCase @Inject constructor(
     fun addRunning(
         title: String,
         tags: List<String>,
-        points: List<LatLng>
+        points: List<LatLng>,
+        author: String? = null,
     ): Flow<Boolean> = flow {
-        val login = getProfileLoginUseCase().first()
+        val login = getProfileLoginUseCase().first() ?: author
         if (login == null) {
             emit(false)
             return@flow

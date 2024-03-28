@@ -19,9 +19,10 @@ class UseTrainingDatabaseUseCase @Inject constructor(
     fun addTraining(
         name: String,
         tags: List<String>,
-        description: String
+        description: String,
+        author: String? = null
     ): Flow<Boolean> = flow {
-        val login = getProfileLoginUseCase().first()
+        val login = getProfileLoginUseCase().first() ?: author
         if (login == null) {
             emit(false)
             return@flow

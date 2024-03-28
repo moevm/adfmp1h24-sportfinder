@@ -17,6 +17,7 @@ import ru.moevm.sportfinder.domain.use_case.GetSportCourtsUseCase
 import ru.moevm.sportfinder.domain.use_case.GetWeatherTemperatureUseCase
 import ru.moevm.sportfinder.domain.use_case.GetWeatherTemperaturesUseCase
 import ru.moevm.sportfinder.domain.use_case.IsAutoSignInEnabledUseCase
+import ru.moevm.sportfinder.domain.use_case.IsFirstStartUseCase
 import ru.moevm.sportfinder.domain.use_case.IsProfileExistsFromLoginScreenUseCase
 import ru.moevm.sportfinder.domain.use_case.SetAutoSignInUseCase
 import ru.moevm.sportfinder.domain.use_case.SetProfileDataUseCase
@@ -79,4 +80,8 @@ object UseCaseModule {
     @Provides
     fun provideGetWeatherTemperaturesUseCase(weatherController: WeatherController) =
         GetWeatherTemperaturesUseCase(weatherController)
+
+    @Provides
+    fun provideIsFirstStartUseCase(profileDao: ProfileDao) =
+        IsFirstStartUseCase(profileDao)
 }
