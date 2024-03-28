@@ -14,6 +14,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -49,6 +50,10 @@ class MainActivity : ComponentActivity() {
             val bottomBarItems = remember { getBottomItems(navigationController).toPersistentList() }
             val state by viewModel.state.collectAsStateWithLifecycle()
             val (isSupportedBottomNav, bottomBarSelectedItem, isSupportedTopBar, topBarType) = state
+
+            LaunchedEffect(true) {
+                viewModel.checkIsFirstStart()
+            }
 
             SportFinderTheme {
                 Scaffold(

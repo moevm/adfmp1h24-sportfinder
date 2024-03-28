@@ -16,6 +16,7 @@ class ProfileDaoImpl @Inject constructor(
     private val nameKey = stringPreferencesKey("nameKey")
     private val imageUrlKey = stringPreferencesKey("imageUrlKey")
     private val isAutoSignInEnabledKey = booleanPreferencesKey("isAutoSignInEnabledKey")
+    private val isFirstStartKey = booleanPreferencesKey("isFirstStartKey")
 
     override suspend fun getProfileName(): String? {
         return dataStore.data.first()[nameKey]
@@ -72,5 +73,13 @@ class ProfileDaoImpl @Inject constructor(
             profileData[nameKey] = ""
             profileData[imageUrlKey] = ""
         }
+    }
+
+    override suspend fun isFirstStart(): Boolean {
+        val isFirstStart = dataStore.data.first()[isFirstStartKey] ?: true
+        dataStore.edit { data ->
+            data[isFirstStartKey] = false
+        }
+        return isFirstStart
     }
 }
