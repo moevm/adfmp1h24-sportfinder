@@ -268,6 +268,7 @@ fun MainNavHost(
                 val state by viewModel.state.collectAsStateWithLifecycle()
                 updateBottomBarVisible(true)
                 updateTopBarType(false, null)
+
                 LaunchedEffect(true) {
                     viewModel.updateListOfRunning()
                 }
@@ -289,6 +290,7 @@ fun MainNavHost(
                     .setBackButtonAsNavigationButton(navigationController::navigateBack)
                     .build()
                 updateTopBarType(true, topBarType)
+
                 LaunchedEffect(true) {
                     viewModel.getTags()
                 }
@@ -326,6 +328,7 @@ fun MainNavHost(
                     }
                     .build()
                 updateTopBarType(true, topBarType)
+
                 LaunchedEffect(true) {
                     viewModel.initState()
                 }
@@ -357,7 +360,6 @@ fun MainNavHost(
                     onLogOutClick = {
                         viewModel.onLogOutClicked {
                             toast.show()
-                            // TODO предусмотреть возможно ошибочное поведение при нажатии Back
                             navigationController.navigateToAuthScreen()
                         }
                     },
@@ -398,9 +400,11 @@ fun MainNavHost(
         composable(route = Screen.ABOUT.route) {
             updateBottomBarVisible(true)
             val topBarType = CommonTopBarTypeBuilder()
+                .setTitle("About", titleStyle = null)
                 .setBackButtonAsNavigationButton(navigationController::navigateBack)
                 .build()
             updateTopBarType(true, topBarType)
+
             AboutScreen()
         }
     }

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -104,10 +105,11 @@ private fun TrainingListItem(
     trainingListItem: TrainingListItemVO,
     navigateToTrainingInfoScreen: (Int) -> Unit,
 ) {
-    val (runningId, name, tags, temperature) = trainingListItem
+    val (runningId, name, tags) = trainingListItem
 
     Box(
         modifier = Modifier
+            .heightIn(min = 60.dp)
             .border(BorderStroke(2.dp, SportFinderLightColorScheme.primary), RoundedCornerShape(5))
             .fillMaxWidth()
             .clickable { navigateToTrainingInfoScreen(runningId) }
@@ -118,7 +120,7 @@ private fun TrainingListItem(
             Row {
                 Column(
                     modifier = Modifier
-                        .padding(top = 4.dp)
+                        .padding(vertical = 4.dp)
                         .fillMaxWidth()
                 ) {
                     Text(
@@ -135,29 +137,6 @@ private fun TrainingListItem(
 
                 }
             }
-            Row(
-                modifier = Modifier.padding(vertical = 4.dp)
-            ) {
-                val courtAttributesModifier = Modifier.padding(end = 8.dp)
-                val courtIconsAttributesModifier = Modifier.padding(end = 8.dp)
-
-                temperature?.let {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_sport_court_screen_weather),
-                        contentDescription = "Temperature sign",
-                        tint = SportFinderLightColorScheme.primary,
-                        modifier = courtIconsAttributesModifier
-                    )
-
-                    Text(
-                        text = if (temperature > 0) "+" + temperature.toString() + "C"
-                        else temperature.toString() + "C",
-                        modifier = courtAttributesModifier,
-                        style = MaterialTheme.typography.titleMedium,
-                    )
-                }
-
-            }
         }
     }
 }
@@ -172,7 +151,6 @@ private fun TrainingListScreenPreview() {
                     trainingId = 0,
                     name = "Старая деревня",
                     tags = persistentListOf("Вкусно"),
-                    temperature = 13,
                 ),
             ),
             textForFilter = "",
@@ -193,7 +171,6 @@ private fun TrainingListItemPreview() {
             trainingId = 0,
             name = "Старая деревня",
             tags = persistentListOf("Вкусно"),
-            temperature = 13,
         ),
         {},
     )

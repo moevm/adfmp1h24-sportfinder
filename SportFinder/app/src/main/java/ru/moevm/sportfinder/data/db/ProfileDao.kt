@@ -17,4 +17,6 @@ interface ProfileDao {
     suspend fun createProfile(login: String, password: String)
 
     suspend fun isProfileExistsFromLoginScreen(login: String, password: String): Boolean
+
+    suspend fun isFirstStart(): Boolean
 }

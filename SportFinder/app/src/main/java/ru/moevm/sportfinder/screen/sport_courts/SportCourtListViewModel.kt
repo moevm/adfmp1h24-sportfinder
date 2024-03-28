@@ -43,7 +43,7 @@ class SportCourtListViewModel @Inject constructor(
         flow {
             val sportCourts = getSportCourtsUseCase().first()
             val filteredData = if (filter.isNotBlank()) {
-                sportCourts.filter { filter in it.name }
+                sportCourts.filter { filter in it.name.lowercase() }
             } else {
                 sportCourts
             }

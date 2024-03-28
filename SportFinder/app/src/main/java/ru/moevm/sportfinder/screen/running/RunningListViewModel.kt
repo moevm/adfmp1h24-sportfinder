@@ -1,5 +1,6 @@
 package ru.moevm.sportfinder.screen.running
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,7 +31,7 @@ class RunningListViewModel @Inject constructor(
     }
 
     fun onFilterApply() {
-        updateListOfRunning(_state.value.textForFilter)
+        updateListOfRunning(_state.value.textForFilter.lowercase())
     }
 
     fun updateListOfRunning(filter: String = "") {
@@ -39,7 +40,7 @@ class RunningListViewModel @Inject constructor(
         flow {
             val runningsDto = useRunningDatabaseUseCase.getRunnings().first()
             val filteredData = if (filter.isNotBlank()) {
-                runningsDto.filter { filter in it.title }
+                runningsDto.filter { filter in it.title.lowercase() }
             } else {
                 runningsDto
             }
