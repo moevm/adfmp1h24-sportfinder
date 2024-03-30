@@ -6,6 +6,8 @@ import kotlinx.collections.immutable.persistentListOf
 
 data class RunningCreateState(
     val title: String = "",
+    val customTag: String = "",
+    val initialSelectedTagIndices: ImmutableList<Int> = persistentListOf(),
     val listOfPoints: List<LatLng> = listOf(),
     val distance: Double = 0.0,
     val listOfTags: List<String> = listOf(),

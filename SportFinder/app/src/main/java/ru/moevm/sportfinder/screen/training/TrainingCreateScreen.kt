@@ -51,6 +51,7 @@ fun TrainingCreateScreen(
     if (isSelectTagDialogShown) {
         SelectListAlertDialog(
             listItems = availableTags,
+            initialCheckedIndex = persistentListOf(),
             onSaveClick = onSaveSelectedTagsClick,
             onDismiss = onDismissSelectTagsDialogClick
         )

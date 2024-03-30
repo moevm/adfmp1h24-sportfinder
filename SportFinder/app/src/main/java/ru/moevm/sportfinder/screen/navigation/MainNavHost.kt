@@ -291,14 +291,12 @@ fun MainNavHost(
                     .build()
                 updateTopBarType(true, topBarType)
 
-                LaunchedEffect(true) {
-                    viewModel.getTags()
-                }
-
                 RunningCreateScreen(
                     state = state,
                     startPoint = viewModel.startPoint,
                     onTitleChanged = viewModel::onTitleChanged,
+                    onCustomTagChanged = viewModel::onCustomTagChanged,
+                    onCustomTagAdded = viewModel::onCustomTagAdded,
                     addPoint = viewModel::addPoint,
                     removePoint = viewModel::removePoint,
                     onShowSelectTagsDialogClick = viewModel::onShowSelectTagsDialogClick,
