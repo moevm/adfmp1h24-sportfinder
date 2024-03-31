@@ -49,6 +49,7 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import ru.moevm.sportfinder.R
 import ru.moevm.sportfinder.screen.common_components.CommonButton
 import ru.moevm.sportfinder.screen.common_components.CommonTextField
+import ru.moevm.sportfinder.screen.common_components.CommonTextFieldWithRightIcon
 import ru.moevm.sportfinder.screen.common_components.DefaultGoogleMap
 import ru.moevm.sportfinder.screen.common_components.SelectListAlertDialog
 import ru.moevm.sportfinder.ui.theme.SportFinderLightColorScheme
@@ -60,6 +61,8 @@ fun RunningCreateScreen(
     startPoint: LatLng,
     state: RunningCreateState,
     onTitleChanged: (String) -> Unit,
+    onCustomTagChanged: (String) -> Unit,
+    onCustomTagAdded: () -> Unit,
     addPoint: (LatLng) -> Unit,
     removePoint: (LatLng) -> Unit,
     onShowSelectTagsDialogClick: () -> Unit,
@@ -73,11 +76,12 @@ fun RunningCreateScreen(
         position = CameraPosition.fromLatLngZoom(startPoint, 15.0f)
     })
 
-    val (title, listOfPoints, distance, listOfTags, availableTags, isSelectTagDialogShown) = state
+    val (title, customTag, initialSelectedTagIndices, listOfPoints, distance, listOfTags, availableTags, isSelectTagDialogShown) = state
 
     if (isSelectTagDialogShown) {
         SelectListAlertDialog(
             listItems = availableTags,
+            initialCheckedIndex = initialSelectedTagIndices,
             onSaveClick = onSaveTagsDialogClick,
             onDismiss = onDismissTagsDialogClick
         )
@@ -156,7 +160,7 @@ fun RunningCreateScreen(
 
             CommonTextField(
                 modifier = Modifier
-                    .padding(top = 8.dp)
+                    .padding(vertical = 8.dp)
                     .fillMaxWidth(),
                 text = title,
                 isSingleLine = true,
@@ -177,12 +181,21 @@ fun RunningCreateScreen(
                     }
                 }
             }
+            CommonTextFieldWithRightIcon(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                text = customTag,
+                isSingleLine = true,
+                hint = "Введите свой тег",
+                onTextChanged = onCustomTagChanged,
+                onIconClicked = onCustomTagAdded,
+            )
             CommonButton(
                 modifier = Modifier
                     .fillMaxWidth(),
                 onClick = onShowSelectTagsDialogClick
             ) {
-                Text(text = "Добавить теги", color = SportFinderLightColorScheme.onPrimary)
+                Text(text = "Выбрать теги", color = SportFinderLightColorScheme.onPrimary)
             }
             CommonButton(
                 modifier = Modifier
@@ -190,7 +203,6 @@ fun RunningCreateScreen(
                 onClick = onSaveClick
             ) {
                 Text(text = "Сохранить", color = SportFinderLightColorScheme.onPrimary)
-
             }
         }
     }

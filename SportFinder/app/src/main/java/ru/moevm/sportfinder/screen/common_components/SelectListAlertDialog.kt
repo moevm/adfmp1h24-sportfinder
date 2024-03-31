@@ -25,13 +25,14 @@ import ru.moevm.sportfinder.ui.theme.SportFinderLightColorScheme
 @Composable
 fun SelectListAlertDialog(
     listItems: ImmutableList<String>,
+    initialCheckedIndex: ImmutableList<Int>,
     onSaveClick: (List<Int>) -> Unit,
     onDismiss: () -> Unit
 ) {
     val checkedList = remember(listItems) {
             mutableStateListOf<Boolean>().apply {
-                repeat(listItems.size) {
-                    add(false)
+                repeat(listItems.size) { index ->
+                    add(index in initialCheckedIndex)
                 }
             }
         }
